@@ -11,7 +11,7 @@ sudo apt-get install xclip -y
 pipx ensurepath
 pipx install pynvim
 mkdir -p ~/.config/nvim/lua/plugins
-git clone https://github.com/kjtakke/neovim.git
+git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
 sudo apt install npm -y
 sudo npm install -g pyright
 sudo npm install -g bash-language-server
