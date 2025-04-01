@@ -77,6 +77,19 @@ rm -rf ~/nvim-clone
 | `gc` | Toggle Comment on highlighted lines |
 
 * * *
+### ✍️ **Multi Line Editing**
+| Command             | Description                                        |
+|------------------------|-----------------------------------------------|
+| `Ctrl-n`               | Select word under cursor & add next matches   |
+| `n` / `N`              | Add next / previous match                     |
+| `Ctrl-Up` / `Ctrl-Down`| Add cursors above / below                     |
+| `Esc`                  | Exit multi-cursor mode                        |
+| `Ctrl-n`               | Start multi-cursor with current word          |
+| `Ctrl-p`               | Skip current match and go to next             |
+| `Ctrl-x`               | Remove current cursor/match                   |
+| `Esc`                  | Exit multi-cursor mode                        |
+
+* * *
 
 ### 🔁 **Undo/Redo**
 
