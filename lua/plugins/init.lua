@@ -30,4 +30,9 @@ require("lazy").setup({
   -- Autopairs and Comments
   "windwp/nvim-autopairs",
   "numToStr/Comment.nvim",
+      -- lazy.nvim example
+  {
+    'mg979/vim-visual-multi',
+    branch = 'master'
+  },
 })
