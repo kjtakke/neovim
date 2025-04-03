@@ -98,8 +98,8 @@ nvim
 | `viw` | Select Inner Word |
 | `vaw` | Select word with white space |
 | `*` | Find Highlighted Word |
-| `N` | Next Occurrence |
-| `n` | Previous Occurrence |
+| `n` | Next Occurrence |
+| `N` | Previous Occurrence |
 * * *
 
 ### ✍️ **Multi Line Editing**
