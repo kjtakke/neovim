@@ -26,7 +26,7 @@ cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
 cp -f ~/nvim-clone/lua/lsp.lua ~/.config/nvim/lua/lsp.lua
 cp -f ~/nvim-clone/lua/plugins/init.lua ~/.config/nvim/lua/plugins/init.lua
 rm -rf ~/nvim-clone
-
+nvim
 ```
 
 # Commands
