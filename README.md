@@ -90,6 +90,16 @@ nvim
 | `gc` | Toggle Comment on highlighted lines |
 
 * * *
+
+### ✍️ **Select**
+| Command | Description |
+| --- | --- |
+| `v` | Select |
+| `viw` | Select Inner Word |
+| `vaw` | Select word with white space |
+
+* * *
+
 ### ✍️ **Multi Line Editing**
 | Command             | Description                                        |
 |------------------------|-----------------------------------------------|
