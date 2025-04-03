@@ -59,20 +59,20 @@ This will output a list of Neovim commands related to navigation, formatted in c
 When searching for "navigation", the output might look like this:
 
 ```
-h  | Move left                    | Navigation
-l  | Move right                   | Navigation
-j  | Move down                    | Navigation
-k  | Move up                      | Navigation
-gg | Go to beginning of file      | Navigation
-G  | Go to end of file            | Navigation
-0  | Move to beginning of line    | Navigation
-^  | Move to first non-blank character | Navigation
-$  | Move to end of line          | Navigation
-w  | Move to beginning of next word | Navigation
-b  | Move to beginning of previous word | Navigation
-}  | Move to next paragraph       | Navigation
-{  | Move to previous paragraph   | Navigation
-%  | Jump between matching brackets | Navigation
+h  | Move left                           | Navigation
+l  | Move right                          | Navigation
+j  | Move down                           | Navigation
+k  | Move up                             | Navigation
+gg | Go to beginning of file             | Navigation
+G  | Go to end of file                   | Navigation
+0  | Move to beginning of line           | Navigation
+^  | Move to first non-blank character   | Navigation
+$  | Move to end of line                 | Navigation
+w  | Move to beginning of next word      | Navigation
+b  | Move to beginning of previous word  | Navigation
+}  | Move to next paragraph              | Navigation
+{  | Move to previous paragraph          | Navigation
+%  | Jump between matching brackets      | Navigation
 ```
 
 ## Troubleshooting
