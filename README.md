@@ -97,6 +97,8 @@ nvim
 | `v` | Select |
 | `viw` | Select Inner Word |
 | `vaw` | Select word with white space |
+| `*` | Find Highlighted Word |
+| `#` | Next Occurrence |
 
 * * *
 
