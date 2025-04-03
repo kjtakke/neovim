@@ -11,14 +11,14 @@ sudo apt-get install xclip -y
 pipx ensurepath
 pipx install pynvim
 mkdir -p ~/.config/nvim/lua/plugins
-git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
+git clone https://github.com/folke/lazy.nvim ~/.local/share/nvim/lazy/lazy.nvim
 sudo apt install npm -y
 sudo npm install -g pyright
 sudo npm install -g bash-language-server
 mkdir -p ~/.config/nvim
 mkdir -p ~/.config/nvim/lua
 mkdir -p ~/.config/nvim/lua/plugins
-git clone https://github.com/kjtakke/neovim/_git/neovim
+git clone git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
 cp -f ~/nvim-clone/init.lua ~/.config/nvim/init.lua
 cp -f ~/nvim-clone/lazy-lock.json ~/.config/nvim/lazy-lock.json
 cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
