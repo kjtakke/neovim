@@ -35,4 +35,27 @@ require("lazy").setup({
     'mg979/vim-visual-multi',
     branch = 'master'
   },
+    {
+  "catppuccin/nvim",
+  name = "catppuccin",
+  priority = 1000,
+  lazy = false,
+  config = function()
+    require("catppuccin").setup({
+      flavour = "frappe",  -- latte, frappe, macchiato, mocha
+      transparent_background = false,
+      integrations = {
+        treesitter = true,
+        native_lsp = {
+          enabled = true,
+        },
+        telescope = true,
+        nvimtree = true,
+        cmp = true,
+        -- lualine removed to avoid missing module error
+      },
+    })
+    vim.cmd("colorscheme catppuccin")
+  end,
+},
 })
