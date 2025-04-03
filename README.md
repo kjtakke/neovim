@@ -29,20 +29,6 @@ rm -rf ~/nvim-clone
 nvim
 ```
 
-## Upgrade Script
-```bash
-git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
-cp -f ~/nvim-clone/init.lua ~/.config/nvim/init.lua
-cp -f ~/nvim-clone/lazy-lock.json ~/.config/nvim/lazy-lock.json
-cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
-cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
-cp -f ~/nvim-clone/lua/lsp.lua ~/.config/nvim/lua/lsp.lua
-cp -f ~/nvim-clone/lua/plugins/init.lua ~/.config/nvim/lua/plugins/init.lua
-rm -rf ~/nvim-clone
-nvim
-```
-
-# Commands
 ### 🧭 **Navigation**
 
 | Command | Description |
@@ -88,31 +74,28 @@ nvim
 | `:%s/# Build/## Build/g` | Find and Replace |
 | `Shift + V` | Select (Multi Line) |
 | `gc` | Toggle Comment on highlighted lines |
+| `za` | Toggle fold at the cursor |
+| `zc` | Close fold at the cursor |
+| `zo` | Open fold at the cursor |
+| `zm` | Close more folds (increase level) |
+| `zr` | Open more folds (reduce level) |
+| `zM` | Close all folds in module |
+| `zR` | Opens all folds in module |
 
 * * *
 
 ### ✍️ **Select**
+
 | Command | Description |
 | --- | --- |
 | `v` | Select |
 | `viw` | Select Inner Word |
 | `vaw` | Select word with white space |
+| `CtrL + U/D Arrow` | Multi Cursor select next Line |
+| `CtrL + N` | Multi Cursor select next occurrence |
 | `*` | Find Highlighted Word |
 | `n` | Next Occurrence |
 | `N` | Previous Occurrence |
-* * *
-
-### ✍️ **Multi Line Editing**
-| Command             | Description                                        |
-|------------------------|-----------------------------------------------|
-| `Ctrl-n`               | Select word under cursor & add next matches   |
-| `n` / `N`              | Add next / previous match                     |
-| `Ctrl-Up` / `Ctrl-Down`| Add cursors above / below                     |
-| `Esc`                  | Exit multi-cursor mode                        |
-| `Ctrl-n`               | Start multi-cursor with current word          |
-| `Ctrl-p`               | Skip current match and go to next             |
-| `Ctrl-x`               | Remove current cursor/match                   |
-| `Esc`                  | Exit multi-cursor mode                        |
 
 * * *
 
@@ -325,6 +308,7 @@ Here’s a comprehensive table of **standard Neovim commands**, broken down by c
 | `}` | Move to next paragraph |
 | `{` | Move to previous paragraph |
 | `%` | Jump between matching brackets |
+| `fg` | From terminal reload session |
 
 * * *
 
@@ -347,6 +331,19 @@ Here’s a comprehensive table of **standard Neovim commands**, broken down by c
 | `J` | Join lines |
 
 * * *
+
+### ✍️ **Multi Line Editing**
+
+| Command | Description |
+| --- | --- |
+| `Ctrl-n` | Select word under cursor & add next matches |
+| `n` / `N` | Add next / previous match |
+| `Ctrl-Up` / `Ctrl-Down` | Add cursors above / below |
+| `Esc` | Exit multi-cursor mode |
+| `Ctrl-n` | Start multi-cursor with current word |
+| `Ctrl-p` | Skip current match and go to next |
+| `Ctrl-x` | Remove current cursor/match |
+| `Esc` | Exit multi-cursor mode |
 
 ### 🔁 **Undo/Redo**
 
