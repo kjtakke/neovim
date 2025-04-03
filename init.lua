@@ -158,6 +158,7 @@ vim.keymap.set('n', '\\n', function()
   vim.cmd('vsplit')
   new_scratch()
 end, { noremap = true, silent = true, desc = "VSplit + New Scratch" })
+require("lazy").setup("plugins")
 
 
 
