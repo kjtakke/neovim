@@ -160,6 +160,7 @@ vim.keymap.set('n', '\\n', function()
 end, { noremap = true, silent = true, desc = "VSplit + New Scratch" })
 require("lazy").setup("plugins")
 
-
+-- AI UI
+vim.api.nvim_set_keymap('n', '<leader>ai', "<cmd>lua require'ai_ui'.open_ui()<CR>", { noremap = true, silent = true })
 
 
