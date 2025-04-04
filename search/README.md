@@ -5,26 +5,29 @@
 The `nsearch` tool is a simple command-line utility designed to search for Neovim commands and their descriptions. It reads from a predefined text file (`nsearch.txt`) and outputs search results in a neatly formatted manner.
 
 ## Installation
-
+**`repgrep`**
+- **MAC:** `brew install ripgrep`
+- **Linux:** `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+  
 To install `nsearch`, follow these steps:
 
-1.  **Create the `/home/bin` directory if it doesn't exist:**
+**Create the `/home/bin` directory if it doesn't exist:**
 
 `bash mkdir -p /home/bin`
 
-1.  **Copy the `nsearch.sh` script to `/home/bin`:**
+**Copy the `nsearch.sh` script to `/home/bin`:**
 
 `bash cp /path/to/nsearch.sh /home/bin/nsearch.sh`
 
-1.  **Copy the `nsearch.txt` data file to `/home/bin`:**
+**Copy the `nsearch.txt` data file to `/home/bin`:**
 
 `bash cp /path/to/nsearch.txt /home/bin/nsearch.txt`
 
-1.  **Make the script executable:**
+**Make the script executable:**
 
 `bash chmod +x /home/bin/nsearch.sh`
 
-1.  **Add an alias to your `.bashrc` file:**
+**Add an alias to your `.bashrc` file:**
 
 Open your `.bashrc` file with your preferred text editor:
 
