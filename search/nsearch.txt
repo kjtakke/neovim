@@ -88,7 +88,7 @@ ZQ | Quit without saving (normal mode) | File & Buffer
 # AI Assistant
 # ======================
 /ai | AI Assistant GUI | AI Assistant
-/s  | Submit AI Assistanr request| AI Assistant
+/s  | Submit Request   | AI Assistant
 
 # ======================
 # SEARCH
