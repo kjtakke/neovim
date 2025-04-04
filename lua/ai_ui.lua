@@ -86,6 +86,7 @@ function M.submit_question()
   vim.api.nvim_buf_set_option(answer_buf, "modifiable", true)
   vim.api.nvim_buf_set_lines(answer_buf, 0, -1, false, result)
   vim.api.nvim_buf_set_option(answer_buf, "modifiable", false)
+  vim.api.nvim_win_set_cursor(answer_win, { line_count, 0 })
   vim.api.nvim_buf_set_lines(question_buf, 0, -1, false, {})
 
   -- Optionally delete the temp file
