@@ -148,10 +148,6 @@ Runs a shell command.
 - Returns either command output or exit status depending on options.
     
 
-#### `get_current_username()`
-
-Returns the current system username, cross-platform compatible.
-
 * * *
 
 ### 🧪 Conversions (`helper.conversions`)
@@ -213,9 +209,6 @@ if f then
   print(helper.file.read(f))
   helper.file.close(f)
 end
-
--- Username
-print("Hello,", helper.os.get_current_username())
 
 ```
 
