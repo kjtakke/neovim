@@ -55,6 +55,7 @@ cp -f ~/nvim-clone/lazy-lock.json ~/.config/nvim/lazy-lock.json
 cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
 cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
 cp -f ~/nvim-clone/lua/lsp.lua ~/.config/nvim/lua/lsp.lua
+cp -f ~/nvim-clone/lua/ai_ui.lua ~/.config/nvim/lua/ai_ui.lua
 cp -f ~/nvim-clone/lua/plugins/init.lua ~/.config/nvim/lua/plugins/init.lua
 
 # Remove temporary clone directory
@@ -88,6 +89,7 @@ cp -f ~/nvim-clone/lazy-lock.json ~/.config/nvim/lazy-lock.json
 cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
 cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
 cp -f ~/nvim-clone/lua/lsp.lua ~/.config/nvim/lua/lsp.lua
+cp -f ~/nvim-clone/lua/ai_ui.lua ~/.config/nvim/lua/ai_ui.lua
 cp -f ~/nvim-clone/lua/plugins/init.lua ~/.config/nvim/lua/plugins/init.lua
 
 # Remove temporary clone directory
