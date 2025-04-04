@@ -61,20 +61,35 @@ function M.submit_question()
   local lines = vim.api.nvim_buf_get_lines(question_buf, 0, -1, false)
   local question = table.concat(lines, "\n")
 
+  -- Write the JSON body to a temporary file
+  local tmpfile = "/tmp/ai_ui_question.json"
+  local f = io.open(tmpfile, "w")
+  if f then
+    local escaped = vim.fn.json_encode({ question = question })
+    f:write(escaped)
+    f:close()
+  else
+    print("Error: Could not write to temporary file.")
+    return
+  end
+
+  -- Use --data-binary to POST the file
   local curl_cmd = string.format(
-    [[curl -s -X POST -H "Content-Type: application/json" -d '{"question": %q}' "%s"]],
-    question,
+    [[curl -s -X POST -H "Content-Type: application/json" --data-binary @%s "%s"]],
+    tmpfile,
     API_ASK_ENDPOINT
   )
+
   local result = vim.fn.systemlist(curl_cmd)
 
+  -- Display the result
   vim.api.nvim_buf_set_option(answer_buf, "modifiable", true)
   vim.api.nvim_buf_set_lines(answer_buf, 0, -1, false, result)
   vim.api.nvim_buf_set_option(answer_buf, "modifiable", false)
+  vim.api.nvim_buf_set_lines(question_buf, 0, -1, false, {})
 
- local line_count = vim.api.nvim_buf_line_count(answer_buf)
- vim.api.nvim_win_set_cursor(answer_win, { line_count, 0 })
- vim.api.nvim_buf_set_lines(question_buf, 0, -1, false, {})
+  -- Optionally delete the temp file
+  os.remove(tmpfile)
 end
 
 function M.clear_chat(no_show)
