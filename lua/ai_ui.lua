@@ -1,5 +1,6 @@
 local M = {}
 
+local question_visible = true
 local question_buf, answer_buf
 local question_win, answer_win
 local last_buf
@@ -33,13 +34,13 @@ function M.open_ui()
     "<cmd>lua require'ai_ui'.submit_question()<CR>",
     { noremap = true, silent = true }
   )
-  vim.api.nvim_buf_set_keymap(
-    question_buf, "n", "<leader>z",
-    "<cmd>lua require'ai_ui'.clear_chat()<CR>",
-    { noremap = true, silent = true }
-  )
 
 
+vim.api.nvim_buf_set_keymap(
+  question_buf, "n", "<leader>z",
+  "<cmd>lua require'ai_ui'.toggle_question_box()<CR>",
+  { noremap = true, silent = true }
+)
   vim.api.nvim_buf_set_keymap(
   question_buf, 'n', '\\f',
   "<cmd>lua require'ai_ui'.insert_current_file()<CR>",
@@ -175,5 +176,72 @@ function M.insert_current_file()
   vim.api.nvim_buf_set_lines(question_buf, current_lines, current_lines, false, insert_lines)
 end
 
+
+function M.toggle_question_box()
+  if not answer_win or not vim.api.nvim_win_is_valid(answer_win) then
+    print("Answer window is missing")
+    return
+  end
+
+  local width = vim.o.columns
+  local height = vim.o.lines
+
+  if question_visible then
+    -- Hide the question box
+    if question_win and vim.api.nvim_win_is_valid(question_win) then
+      vim.api.nvim_win_close(question_win, true)
+      question_win = nil
+    end
+
+    -- Resize the answer box to 30% width, right-aligned, full height
+    local new_width = math.floor(width * 0.3)
+    local new_col = width - new_width
+
+    vim.api.nvim_win_set_config(answer_win, {
+      relative = "editor",
+      row = 0,
+      col = new_col,
+      width = new_width,
+      height = height,
+      style = "minimal",
+      border = "rounded",
+    })
+
+    question_visible = false
+  else
+    -- Reopen the question window
+    local question_height = 8
+    local answer_height = height - question_height - 6
+    local win_width = math.floor(width * 0.8)
+    local win_col = math.floor((width - win_width) / 2)
+
+    -- Only reopen if buffer still exists
+    if question_buf and vim.api.nvim_buf_is_valid(question_buf) then
+      question_win = vim.api.nvim_open_win(question_buf, true, {
+        relative = "editor",
+        row = 2,
+        col = win_col,
+        width = win_width,
+        height = question_height,
+        border = "rounded",
+        style = "minimal",
+      })
+      vim.api.nvim_buf_set_option(question_buf, "filetype", "markdown")
+    end
+
+    -- Resize answer box back to bottom layout
+    vim.api.nvim_win_set_config(answer_win, {
+      relative = "editor",
+      row = question_height + 4,
+      col = win_col,
+      width = win_width,
+      height = answer_height,
+      style = "minimal",
+      border = "rounded",
+    })
+
+    question_visible = true
+  end
+end
 
 return M
