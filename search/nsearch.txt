@@ -71,7 +71,7 @@ U | Undo all changes on current line | Undo/Redo
 :e <file> | Open/edit file | File & Buffer
 :e! | Revert/discard changes & reopen file | File & Buffer
 :w | Save file | File & Buffer
-:w <file> | Save as another file | aFile & Buffer
+:w <file> | Save as another file | File & Buffer
 :q | Quit | File & Buffer
 :q! | Quit without saving | File & Buffer
 :qall! | Quit (kill all processes) | File & Buffer
@@ -83,6 +83,15 @@ U | Undo all changes on current line | Undo/Redo
 :ls / :buffers | List open buffers | File & Buffer
 \x | New scratch file | File & Buffer
 ZQ | Quit without saving (normal mode) | File & Buffer
+
+# ======================
+# AI Assistant
+# ======================
+/ai | AI Assistant GUI | AI Assistant
+/s  | Submit Request   | AI Assistant
+/f  | Append upto 1000 lines  | AI Assistant
+/z  | Resize pane for easy copying  | AI Assistant
+/a  | Reset/Clear Chat | AI Assistant
 
 # ======================
 # SEARCH
