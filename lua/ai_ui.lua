@@ -1,4 +1,9 @@
+
 local M = {}
+
+function M.set_last_buf()
+  last_buf = vim.api.nvim_get_current_buf()
+end
 
 local question_visible = true
 local question_buf, answer_buf
@@ -37,6 +42,11 @@ function M.open_ui()
 
 
 vim.api.nvim_buf_set_keymap(
+  question_buf, "n", "\\a",
+  "<cmd>lua require'ai_ui'.clear_chat()<CR>",
+  { noremap = true, silent = true }
+)
+vim.api.nvim_buf_set_keymap(
   question_buf, "n", "<leader>z",
   "<cmd>lua require'ai_ui'.toggle_question_box()<CR>",
   { noremap = true, silent = true }
@@ -62,7 +72,8 @@ vim.api.nvim_buf_set_keymap(
   vim.api.nvim_buf_set_option(answer_buf, "modifiable", false)
 
   -- 3. Clear the server chat history but do NOT show its response.
-  M.clear_chat(true)  -- pass a flag, meaning "no need to show server's response"
+  -- M.clear_chat(true)  -- pass a flag, meaning "no need to show server's response"
+  M.load_history()
 end
 
 
@@ -126,11 +137,6 @@ function M.clear_chat(no_show)
 
   -- Also clear the question buffer if you like
   vim.api.nvim_buf_set_lines(question_buf, 0, -1, false, {})
-end
-
-
-function M.set_last_buf()
-  last_buf = vim.api.nvim_get_current_buf()
 end
 
 -- Get previous window's buffer
@@ -242,6 +248,24 @@ function M.toggle_question_box()
 
     question_visible = true
   end
+end
+
+function M.load_history()
+  if not answer_buf or not vim.api.nvim_buf_is_valid(answer_buf) then
+    print("Answer buffer not ready")
+    return
+  end
+
+  local curl_cmd = [[curl -s http://localhost:5001/history]]
+  local result = vim.fn.systemlist(curl_cmd)
+
+  vim.api.nvim_buf_set_option(answer_buf, "modifiable", true)
+  vim.api.nvim_buf_set_lines(answer_buf, 0, -1, false, result)
+  vim.api.nvim_buf_set_option(answer_buf, "modifiable", false)
+
+  -- scroll to bottom
+  local line_count = vim.api.nvim_buf_line_count(answer_buf)
+  vim.api.nvim_win_set_cursor(answer_win, { line_count, 0 })
 end
 
 return M
