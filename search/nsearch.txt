@@ -90,7 +90,8 @@ ZQ | Quit without saving (normal mode) | File & Buffer
 /ai | AI Assistant GUI | AI Assistant
 /s  | Submit Request   | AI Assistant
 /f  | Append upto 1000 lines  | AI Assistant
-/z  | Toggle answer pane size | AI Assistant
+/z  | Resize pane for easy copying  | AI Assistant
+/a  | Reset/Clear Chat | AI Assistant
 
 # ======================
 # SEARCH
