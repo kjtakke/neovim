@@ -20,6 +20,9 @@ To install NeoVim and set up the necessary plugins and configurations, execute t
 # Update package lists
 sudo apt update
 
+#Install Live Grep
+sudo apt install ripgrep
+
 # Install NeoVim
 sudo apt install neovim -y
 
