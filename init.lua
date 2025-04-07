@@ -119,8 +119,8 @@ vim.o.foldenable = true
 vim.o.foldlevel = 99
 vim.o.foldminlines = 5
 
-vim.o.mo = false
-
+# vim.o.mo = false
+vim.opt.modline = false
 
 local function new_scratch()
     local buf = vim.api.nvim_create_buf(false, true)
