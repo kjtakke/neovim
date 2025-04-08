@@ -12,50 +12,45 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
 -- Load plugins
-require("plugins")
-require("lsp")
+require("lazy").setup({
+  -- Your plugins here
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+  { "nvim-tree/nvim-tree.lua" },
+  { "windwp/nvim-autopairs" },
+  { "numToStr/Comment.nvim" },
+  { "nvim-lualine/lualine.nvim" },
+  { "lewis6991/gitsigns.nvim" },
+  { "nvim-telescope/telescope.nvim" },
+  { "nvim-treesitter/nvim-treesitter" },
+  { "hrsh7th/nvim-cmp" },
+  { "L3MON4D3/LuaSnip" },
+  { "neovim/nvim-lspconfig" },
+})
+
+-- Load plugin configurations
+local status_ok, _ = pcall(require, "plugins")
+if not status_ok then
+  vim.notify("Failed to load plugins configuration")
+end
+
+-- Set up plugins
 require("nvim-tree").setup()
--- Rename the variable under your cursor.
---  Most Language Servers support renaming across files, etc.
-
-
-vim.cmd.colorscheme "catppuccin"
-
 require("nvim-autopairs").setup()
 require("Comment").setup()
-require("nvim-tree").setup()
-require("lualine").setup {
+require("lualine").setup({
   options = { theme = "catppuccin" }
-}
+})
 require("gitsigns").setup()
 require("telescope").setup()
-
-require("nvim-treesitter.configs").setup {
+require("nvim-treesitter.configs").setup({
   ensure_installed = { "python" },
   highlight = { enable = true },
-}
+})
 
+-- Set up completion
 local cmp = require("cmp")
 local luasnip = require("luasnip")
-
-local lspconfig = require("lspconfig")
-
-lspconfig.bashls.setup({
-  filetypes = { "sh", "zsh", "bash" },
-})
-
-vim.api.nvim_create_user_command("Tree", function(opts)
-  local path = vim.fn.expand(opts.args ~= "" and opts.args or ".")
-  require("nvim-tree.api").tree.open({ path = path, find_file = true, focus = true })
-end, {
-  nargs = "?", -- Allow optional argument
-  complete = "file", -- Enable file path auto-completion
-})
-
-
-
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -74,10 +69,25 @@ cmp.setup({
   })
 })
 
+-- Set up LSP
+local lspconfig = require("lspconfig")
+lspconfig.bashls.setup({
+  filetypes = { "sh", "zsh", "bash" },
+})
+
+-- Custom commands
+vim.api.nvim_create_user_command("Tree", function(opts)
+  local path = vim.fn.expand(opts.args ~= "" and opts.args or ".")
+  require("nvim-tree.api").tree.open({ path = path, find_file = true, focus = true })
+end, {
+  nargs = "?", -- Allow optional argument
+  complete = "file", -- Enable file path auto-completion
+})
+
+-- Key mappings
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle File Tree" })
 
 local builtin = require("telescope.builtin")
--- vim.keymap.set("n", "<leader>x", ":e scratch<CR>", { desc = "[X] New Scratch File" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 vim.keymap.set("n", "<leader>fg", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[S]earch [F]iles" })
@@ -89,117 +99,90 @@ vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[S]earch [R]esume" }
 vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
+-- Autocmds
 vim.api.nvim_create_autocmd("UIEnter", {
   callback = function()
     vim.opt.clipboard = "unnamedplus"
   end
 })
 
-
-vim.opt.number = true
--- vim.opt.rnu = true
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-
--- Show which line your cursor is on
-vim.opt.cursorline = true
-
--- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
-
--- Make file name completion work just like bash
-vim.opt.wildmenu = true
-vim.opt.wildmode = "longest,list"
-
--- vim.opt.wrapscan = false
-
-vim.o.foldmethod = "indent"
-vim.o.foldenable = true
-
-vim.o.foldlevel = 99
-vim.o.foldminlines = 5
-
-vim.o.mo = false
-
-
-local function new_scratch()
-    local buf = vim.api.nvim_create_buf(false, true)
-
-    vim.api.nvim_set_current_buf(buf)
-
-    vim.api.nvim_buf_set_var(buf, "name", "")
-end
-
-vim.keymap.set("n", "<leader>x", new_scratch, { desc = "New Scratch" })
-
-
--- Auto-open NvimTree on startup
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
     require("nvim-tree.api").tree.toggle()
   end
 })
 
--- Run current file with Python
-vim.keymap.set('n', '\\rp', ':w !python3 %<CR>', { noremap = true, silent = true })
+-- Options
+vim.opt.number = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.cursorline = true
+vim.opt.scrolloff = 10
+vim.opt.wildmenu = true
+vim.opt.wildmode = "longest,list"
+vim.opt.foldmethod = "indent"
+vim.opt.foldenable = true
+vim.opt.foldlevel = 99
+vim.opt.foldminlines = 5
+vim.opt.modeline = false
 
--- Run current file with Bash
-vim.keymap.set('n', '\\rb', ':w !bash %<CR>', { noremap = true, silent = true })
+-- Function to create a new scratch buffer
+local function new_scratch()
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_set_current_buf(buf)
+  vim.api.nvim_buf_set_var(buf, "name", "")
+end
 
--- Run Quit
-vim.keymap.set('n', '\\q', ':q<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '\\qq', ':q!<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '\\wq', ':wq<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '\\w', ':w<CR>', { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>x", new_scratch, { desc = "New Scratch" })
 
+-- Key mappings for running files and quitting
+vim.keymap.set('n', '\\rp', ':w !python3 %<CR>', { noremap = true, silent = true, desc = "Run Python" })
+vim.keymap.set('n', '\\rb', ':w !bash %<CR>', { noremap = true, silent = true, desc = "Run Bash" })
+vim.keymap.set('n', '\\q', ':q<CR>', { noremap = true, silent = true, desc = "Quit" })
+vim.keymap.set('n', '\\qq', ':q!<CR>', { noremap = true, silent = true, desc = "Force Quit" })
+vim.keymap.set('n', '\\wq', ':wq<CR>', { noremap = true, silent = true, desc = "Save and Quit" })
+vim.keymap.set('n', '\\w', ':w<CR>', { noremap = true, silent = true, desc = "Save" })
 
 vim.keymap.set('n', '\\n', function()
-  vim.opt.splitright = true      -- ensures vsplit goes to the right
+  vim.opt.splitright = true
   vim.cmd('vsplit')
   new_scratch()
 end, { noremap = true, silent = true, desc = "VSplit + New Scratch" })
-require("lazy").setup("plugins")
-
-
 
 -- Function to run pylint and filter output
 local function run_pylint()
-    -- Write the current buffer
-    vim.cmd('write')
+  vim.cmd('write')
+  local filename = vim.fn.expand('%')
+  local handle = io.popen('pylint "' .. filename .. '" 2>&1')
+  if handle then
+    local output = handle:read('*a')
+    handle:close()
 
-    -- Get the current file name
-    local filename = vim.fn.expand('%')
-
-    -- Run pylint and capture output
-    local handle = io.popen('pylint "' .. filename .. '" 2>&1')
-    if handle then
-        local output = handle:read('*a')
-        handle:close()
-
-        -- Filter output to show only errors, excluding E0401
-        local filtered_output = {}
-        for line in output:gmatch('[^\r\n]+') do
-            if line:match('^%S+:%d+:%d+: E') and not line:match('E0401') then
-                table.insert(filtered_output, line)
-            end
-        end
-
-        -- Display filtered output in a new buffer
-        local bufnr = vim.api.nvim_create_buf(false, true)
-        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, filtered_output)
-        vim.api.nvim_open_win(bufnr, true, {
-            relative = 'editor',
-            width = 80,
-            height = 20,
-            col = 10,
-            row = 10,
-            style = 'minimal',
-            border = 'single'
-        })
-    else
-        print("Failed to run pylint")
+    local filtered_output = {}
+    for line in output:gmatch('[^\r\n]+') do
+      if line:match('^%S+:%d+:%d+: E') and not line:match('E0401') then
+        table.insert(filtered_output, line)
+      end
     end
+
+    local bufnr = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, filtered_output)
+    vim.api.nvim_open_win(bufnr, true, {
+      relative = 'editor',
+      width = 80,
+      height = 20,
+      col = 10,
+      row = 10,
+      style = 'minimal',
+      border = 'single'
+    })
+  else
+    vim.notify("Failed to run pylint")
+  end
 end
 
--- Create the custom command :wt
+-- Create the custom command :Wt
 vim.api.nvim_create_user_command('Wt', run_pylint, {})
+
+-- Set colorscheme
+vim.cmd.colorscheme "catppuccin"
