@@ -24,7 +24,13 @@ sudo apt update
 sudo apt install ripgrep
 
 # Install NeoVim
-sudo apt install neovim -y
+curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
+sudo rm -rf /opt/nvim
+echo 'Installing nvim'
+sudo tar -C /opt -xzf /nvim-linux-x86_64.tar.gz
+echo 'Cleaning up'
+rm nvim-linux64.tar.gz
+echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.bashrc
 
 # Install pipx for Python package management
 sudo apt install pipx -y
