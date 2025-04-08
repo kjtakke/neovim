@@ -162,4 +162,44 @@ require("lazy").setup("plugins")
 
 
 
+-- Function to run pylint and filter output
+local function run_pylint()
+    -- Write the current buffer
+    vim.cmd('write')
 
+    -- Get the current file name
+    local filename = vim.fn.expand('%')
+
+    -- Run pylint and capture output
+    local handle = io.popen('pylint "' .. filename .. '" 2>&1')
+    if handle then
+        local output = handle:read('*a')
+        handle:close()
+
+        -- Filter output to show only errors, excluding E0401
+        local filtered_output = {}
+        for line in output:gmatch('[^\r\n]+') do
+            if line:match('^%S+:%d+:%d+: E') and not line:match('E0401') then
+                table.insert(filtered_output, line)
+            end
+        end
+
+        -- Display filtered output in a new buffer
+        local bufnr = vim.api.nvim_create_buf(false, true)
+        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, filtered_output)
+        vim.api.nvim_open_win(bufnr, true, {
+            relative = 'editor',
+            width = 80,
+            height = 20,
+            col = 10,
+            row = 10,
+            style = 'minimal',
+            border = 'single'
+        })
+    else
+        print("Failed to run pylint")
+    end
+end
+
+-- Create the custom command :wt
+vim.api.nvim_create_user_command('Wt', run_pylint, {})
