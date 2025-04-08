@@ -57,7 +57,7 @@ Ctrl + N | Multi Cursor: select next occurrence | Multiple Cursor
 * | Find highlighted word | Select / Search
 n | Next occurrence | Select / Search
 N | Previous occurrence | Select / Search
-
+CtrL-V the Shtit + i | Select Multi Line | Multiple Cursor
 # ======================
 # UNDO / REDO
 # ======================
@@ -82,7 +82,8 @@ U | Undo all changes on current line | Undo/Redo
 :bd | Delete buffer | File & Buffer
 :ls / :buffers | List open buffers | File & Buffer
 \x | New scratch file | File & Buffer
-ZQ | Quit without saving (normal mode) | File & Buffer
+ZQ | Quit without saving (normal mode) | File & Buffeir
+:Wt | Write and TEst Python Files using pylint | File & Buffeir
 
 # ======================
 # AI Assistant
@@ -183,3 +184,4 @@ Ctrl-\ Ctrl-n | Exit terminal insert mode | Terminal
 fg | Live Grep (plugin command) | Plugin
 ff | File Grep (plugin command) | Plugin
 gc | Toggle comment on highlighted lines | Plugin
+
