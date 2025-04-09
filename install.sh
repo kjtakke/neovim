@@ -1,6 +1,6 @@
 # Update package lists
 sudo apt update
-
+sudo apt install micro -y
 #Install Live Grep
 sudo apt install ripgrep pylint
 
