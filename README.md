@@ -27,7 +27,7 @@ sudo apt install ripgrep pylint
 curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
 sudo rm -rf /opt/nvim
 echo 'Installing nvim'
-sudo tar -C /opt -xzf /nvim-linux-x86_64.tar.gz
+sudo tar -C /opt -xzf ./nvim-linux-x86_64.tar.gz
 echo 'Cleaning up'
 rm nvim-linux-x86_64.tar.gz
 echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.bashrc
