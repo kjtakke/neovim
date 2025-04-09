@@ -1,5 +1,10 @@
 # NeoVim Installation and Usage Guide
 `git clone https://github.com/kjtakke/neovim.git && bash neovim/install.sh && rm -rf neovim`
+> - Close Terminal Session
+> - Reopen Termina
+> - `nvim`
+> - `:Lazy` (If not automated)
+> - `Shtif + U` to update plugins
 
 This comprehensive guide provides detailed instructions for installing NeoVim, configuring it with plugins, and an extensive list of commands for proficient usage. Adhering to software engineering principles, this document aims to be clear, concise, and structured for ease of understanding and implementation.
 
