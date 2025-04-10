@@ -1,4 +1,5 @@
 # NeoVim Installation and Usage Guide
+> Run all in bash not zsh
 `git clone https://github.com/kjtakke/neovim.git && bash neovim/install.sh && rm -rf neovim`
 > - Close Terminal Session
 > - Reopen Termina
