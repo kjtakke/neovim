@@ -1,6 +1,6 @@
 # Update package lists
 sudo apt update
-sudo apt install micro -y
+
 #Install Live Grep
 sudo apt install ripgrep pylint
 
@@ -13,7 +13,6 @@ echo 'Cleaning up'
 rm nvim-linux-x86_64.tar.gz
 echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.bashrc
 echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.zshrc
-
 # Install pipx for Python package management
 sudo apt install pipx -y
 
