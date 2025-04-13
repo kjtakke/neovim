@@ -164,17 +164,22 @@ local function run_pylint()
         table.insert(filtered_output, line)
       end
     end
-
+    local ui = vim.api.nvim_list_uis()[1]
+    local width = math.floor(ui.width * 0.6)
+    local height = math.floor(ui.height * 0.6)
+    local col = math.floor((ui.width - width) / 2)
+    local row = math.floor((ui.height - height) / 2)
     local bufnr = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, filtered_output)
     vim.api.nvim_open_win(bufnr, true, {
       relative = 'editor',
-      width = 80,
-      height = 20,
-      col = 10,
-      row = 10,
-      style = 'minimal',
-      border = 'single'
+      style = "minimal",
+      relative = "editor",
+      width = width,
+      height = height,
+      col = col,
+      row = row,
+      border = "rounded"
     })
   else
     vim.notify("Failed to run pylint")
