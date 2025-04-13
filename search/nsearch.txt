@@ -85,7 +85,8 @@ U | Undo all changes on current line | Undo/Redo
 :ls / :buffers | List open buffers | File & Buffer
 \x | New scratch file | File & Buffer
 ZQ | Quit without saving (normal mode) | File & Buffeir
-:Wt | Write and TEst Python Files using pylint | File & Buffeir
+:Wt | Write and Test Python Files using pylint | File & Buffeir
+:Wts | Write and Test Shell Scripts using SehllCheck | File & Buffeir
 
 # ======================
 # AI Assistant
