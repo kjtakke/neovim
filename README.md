@@ -27,7 +27,7 @@ To install NeoVim and set up the necessary plugins and configurations, execute t
 sudo apt update
 
 #Install Live Grep
-sudo apt install ripgrep pylint
+sudo apt install ripgrep pylint shellcheck
 
 # Install NeoVim
 curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
