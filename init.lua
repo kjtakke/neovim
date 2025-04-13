@@ -172,7 +172,6 @@ local function run_pylint()
     local bufnr = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, filtered_output)
     vim.api.nvim_open_win(bufnr, true, {
-      relative = 'editor',
       style = "minimal",
       relative = "editor",
       width = width,
