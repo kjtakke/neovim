@@ -191,9 +191,8 @@ vim.api.nvim_create_user_command('Wt', run_pylint, {})
 -- Function to run ShellCheck and show output in a floating window
 local function run_shellcheck()
   vim.cmd('silent! write!')
-  local filename = vim.fn.expand('%:p') -- Full path to the file
-
-  local shellcheck_path = '/usr/bin/shellcheck'
+  local filename = vim.fn.expand('%:p')  -- Full path to the current file
+  local shellcheck_path = '/usr/bin/shellcheck'  -- Adjust if needed
 
   if vim.fn.executable(shellcheck_path) == 0 then
     vim.notify("ShellCheck not found at: " .. shellcheck_path, vim.log.levels.ERROR)
@@ -201,8 +200,6 @@ local function run_shellcheck()
   end
 
   local command = shellcheck_path .. ' --severity=info --enable=all "' .. filename .. '" 2>&1'
-  vim.notify("Running: " .. command)  -- Log the exact command being run
-
   local handle = io.popen(command)
   if not handle then
     vim.notify("Failed to run ShellCheck", vim.log.levels.ERROR)
@@ -212,27 +209,26 @@ local function run_shellcheck()
   local output = handle:read('*a')
   handle:close()
 
-  -- Print raw output to message log
-  vim.notify("Raw ShellCheck output:\n" .. output)
-
-  local filtered_output = {}
-  for line in output:gmatch('[^\r\n]+') do
-    if line:match('^%S+:%d+:%d+:') then
-      table.insert(filtered_output, line)
-    end
+  -- Split the full output string into lines
+  local lines = {}
+  for line in output:gmatch("[^\r\n]+") do
+    table.insert(lines, line)
   end
 
-  if #filtered_output == 0 then
-    table.insert(filtered_output, "✅ No issues found by ShellCheck!")
+  if #lines == 0 then
+    table.insert(lines, "✅ No issues found by ShellCheck!")
   end
 
+  -- Create a floating window to display the output
   local ui = vim.api.nvim_list_uis()[1]
   local width = math.floor(ui.width * 0.6)
   local height = math.floor(ui.height * 0.6)
   local col = math.floor((ui.width - width) / 2)
   local row = math.floor((ui.height - height) / 2)
+
   local bufnr = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, filtered_output)
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+
   vim.api.nvim_open_win(bufnr, true, {
     style = "minimal",
     relative = "editor",
@@ -245,6 +241,7 @@ local function run_shellcheck()
 end
 
 vim.api.nvim_create_user_command('Wtsh', run_shellcheck, {})
+
 
 -- Set colorscheme
 vim.cmd.colorscheme "catppuccin"
