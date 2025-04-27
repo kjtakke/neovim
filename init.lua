@@ -165,7 +165,7 @@ local function run_pylint()
       end
     end
     if #filtered_output== 0 then
-      table.insert(lines, "✅ No issues found!")
+      table.insert(filtered_output, "✅ No issues found!")
     end
     local ui = vim.api.nvim_list_uis()[1]
     local width = math.floor(ui.width * 0.6)
