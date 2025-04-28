@@ -31,16 +31,21 @@ require("lazy").setup({
   ---------------------------------------------------------------------------
   --  Colourscheme -----------------------------------------------------------
   ---------------------------------------------------------------------------
-  {
-    "catppuccy{ enabled = true },
-          telescope   = true,
-          nvimtree    = true,
-          cmp         = true,
-        },
-      })
-      vim.cmd.colorscheme("catppuccin")
-    end,
-  },
+{
+  "catppuccin/nvim",
+  name = "catppuccin",
+  priority = 1000,
+  config = function()
+    require("catppuccin").setup({
+      integrations = {
+        telescope = true,
+        nvimtree  = true,
+        cmp       = true,
+      },
+    })
+    vim.cmd.colorscheme("catppuccin")
+  end,
+},
 
   ---------------------------------------------------------------------------
   --  LSP / Mason / Completion ----------------------------------------------
@@ -183,7 +188,7 @@ vim.opt.foldlevel    = 99
 vim.opt.foldminlines = 5
 vim.opt.clipboard    = "unnamedplus"
 vim.opt.modeline     = false
-
+vim.opt.wrap         = false
 -------------------------------------------------------------------------------
 --  Autocommands -------------------------------------------------------------
 -------------------------------------------------------------------------------
