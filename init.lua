@@ -188,7 +188,7 @@ vim.opt.foldlevel    = 99
 vim.opt.foldminlines = 5
 vim.opt.clipboard    = "unnamedplus"
 vim.opt.modeline     = false
-vim.opt.wrap         = false
+-- vim.opt.wrap         = false
 -------------------------------------------------------------------------------
 --  Autocommands -------------------------------------------------------------
 -------------------------------------------------------------------------------
