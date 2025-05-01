@@ -311,3 +311,7 @@ local function run_shellcheck()
 end
 
 vim.api.nvim_create_user_command('Wtsh', run_shellcheck, {})
+
+
+-- Map <leader>b to :G blame using vim-fugitive
+vim.keymap.set('n', '<leader>b', ':G blame<CR>', { noremap = true, silent = true, desc = 'Git Blame' })
