@@ -315,3 +315,11 @@ vim.api.nvim_create_user_command('Wtsh', run_shellcheck, {})
 
 -- Map <leader>b to :G blame using vim-fugitive
 vim.keymap.set('n', '<leader>b', ':G blame<CR>', { noremap = true, silent = true, desc = 'Git Blame' })
+
+
+-- Directional window navigation with Ctrl + Arrow keys
+vim.keymap.set('n', '<C-Right>', '<C-w>l', { noremap = true, silent = true })  -- right
+vim.keymap.set('n', '<C-Left>',  '<C-w>h', { noremap = true, silent = true })  -- left
+vim.keymap.set('n', '<C-Down>',  '<C-w>j', { noremap = true, silent = true })  -- down
+vim.keymap.set('n', '<C-Up>',    '<C-w>k', { noremap = true, silent = true })  -- up
+
