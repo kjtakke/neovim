@@ -75,6 +75,8 @@ cp -f ~/nvim-clone/lua/plugins/init.lua ~/.config/nvim/lua/plugins/init.lua
 # Remove temporary clone directory
 rm -rf ~/nvim-clone
 
+source ~/.zshrc
+source ~/.bashrc
 # Launch NeoVim
 nvim
 ```
