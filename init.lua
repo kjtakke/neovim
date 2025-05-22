@@ -331,3 +331,17 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     vim.opt_local.spelllang = "en_au"
   end,
 })
+
+
+-- Define and create the spell directory if it doesn't exist
+local spell_dir = vim.fn.stdpath("config") .. "/spell"
+if vim.fn.isdirectory(spell_dir) == 0 then
+  vim.fn.mkdir(spell_dir, "p")
+end
+
+-- Set persistent spellfile
+vim.opt.spellfile = spell_dir .. "/en.utf-8.add"
+
+-- Map <leader>z to add word under cursor to spellfile
+vim.keymap.set("n", "<leader>z", "zg", { desc = "Add word to dictionary" })
+
