@@ -66,6 +66,7 @@ sudo npm install -g bash-language-server
 # Clone configuration repository and set up NeoVim
 git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
 cp -f ~/nvim-clone/init.lua ~/.config/nvim/init.lua
+cp -f ~/nvim-clone/search/nsearch.txt ~/.config/nvim/nsearch.txt
 cp -f ~/nvim-clone/lazy-lock.json ~/.config/nvim/lazy-lock.json
 cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
 cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
@@ -101,6 +102,7 @@ git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
 
 # Update configuration files
 cp -f ~/nvim-clone/init.lua ~/.config/nvim/init.lua
+cp -f ~/nvim-clone/search/nsearch.txt ~/.config/nvim/nsearch.txt
 cp -f ~/nvim-clone/lazy-lock.json ~/.config/nvim/lazy-lock.json
 cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
 cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
