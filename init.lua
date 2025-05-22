@@ -323,3 +323,11 @@ vim.keymap.set('n', '<C-Left>',  '<C-w>h', { noremap = true, silent = true })  -
 vim.keymap.set('n', '<C-Down>',  '<C-w>j', { noremap = true, silent = true })  -- down
 vim.keymap.set('n', '<C-Up>',    '<C-w>k', { noremap = true, silent = true })  -- up
 
+-- Enable spellcheck with Australian English for specific filetypes
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "markdown", "gitcommit", "text" },
+  callback = function()
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = "en_au"
+  end,
+})
