@@ -325,7 +325,7 @@ vim.keymap.set('n', '<C-Up>',    '<C-w>k', { noremap = true, silent = true })  -
 
 -- Enable spellcheck with Australian English for specific filetypes
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "markdown", "gitcommit", "text" },
+  pattern = { "markdown", "gitcommit", "text", "python" },
   callback = function()
     vim.opt_local.spell = true
     vim.opt_local.spelllang = "en_au"
