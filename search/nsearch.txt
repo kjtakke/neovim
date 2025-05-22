@@ -34,6 +34,7 @@ cc | Change whole line | Editing
 cw | Change word | Editing
 C | Change to end of line | Editing
 J | Join lines | Editing
+\z | Add Word tro Dictionary | Editing
 
 # ======================
 # FOLDING (BUILT-IN)
