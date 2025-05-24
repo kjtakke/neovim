@@ -57,7 +57,9 @@ mkdir -p ~/.config/nvim/lua/plugins
 git clone https://github.com/folke/lazy.nvim ~/.local/share/nvim/lazy/lazy.nvim
 
 # Install Node.js package manager
-sudo apt install npm -y
+# sudo apt install npm -y
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
 
 # Install TypeScript and Bash language servers
 sudo npm install -g pyright
@@ -72,6 +74,8 @@ cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
 cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
 cp -f ~/nvim-clone/lua/lsp.lua ~/.config/nvim/lua/lsp.lua
 cp -f ~/nvim-clone/lua/plugins/init.lua ~/.config/nvim/lua/plugins/init.lua
+
+git clone https://github.com/github/copilot.vim.git ~/.config/nvim/pack/github/start/copilot.vim
 
 # Remove temporary clone directory
 rm -rf ~/nvim-clone
