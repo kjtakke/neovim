@@ -64,6 +64,8 @@ sudo apt install -y nodejs
 # Install TypeScript and Bash language servers
 sudo npm install -g pyright
 sudo npm install -g bash-language-server
+sudo npm install -g tree-sitter-cli
+
 
 # Clone configuration repository and set up NeoVim
 git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
