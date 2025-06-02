@@ -49,64 +49,101 @@ require("lazy").setup({
 {
   "github/copilot.vim",
   lazy = false,
+
+
+---------------------------------------------------------------------------
+--  LSP / Mason / Completion ----------------------------------------------
+---------------------------------------------------------------------------
+{ "neovim/nvim-lspconfig" },
+
+{ "williamboman/mason.nvim", build = ":MasonUpdate", config = function()
+    safe_require("mason").setup()
+  end },
+
+{ "williamboman/mason-lspconfig.nvim",
+  dependencies = { "williamboman/mason.nvim" },
+  config = function()
+    safe_require("mason-lspconfig").setup({
+      ensure_installed = {
+        -- Web
+        "html", "cssls", "emmet_ls", "tsserver", "eslint", "jsonls",
+
+        -- Backend
+        "pyright", "bashls", "lua_ls", "gopls", "rust_analyzer",
+        "clangd", "dockerls", "yamlls", "marksman", "graphql",
+
+        -- Java / .NET / JVM
+        "jdtls", "kotlin_language_server", "lemminx", "omnisharp",
+
+        -- Database / Configs
+        "sqlls", "jsonls", "yamlls", "taplo", -- toml
+
+        -- Others
+        "perlpls", "powershell_es", "ansiblels", "terraformls",
+
+        -- Markdown and docs
+        "marksman", "ltex", -- language tool for grammar
+      },
+    })
+  end,
 },
-  ---------------------------------------------------------------------------
-  --  LSP / Mason / Completion ----------------------------------------------
-  ---------------------------------------------------------------------------
-  { "neovim/nvim-lspconfig" },
 
-  { "williamboman/mason.nvim", build = ":MasonUpdate", config = function()
-      safe_require("mason").setup()
-    end },
-
-  { "williamboman/mason-lspconfig.nvim",
-    dependencies = { "williamboman/mason.nvim" },
-    config = function()
-      safe_require("mason-lspconfig").setup({
-        ensure_installed = { "pyright", "bashls" },
-      })
-    end,
+{ "hrsh7th/nvim-cmp",
+  dependencies = {
+    "hrsh7th/cmp-nvim-lsp",
+    "L3MON4D3/LuaSnip",
+    "saadparwaiz1/cmp_luasnip",
   },
+  config = function()
+    local cmp     = safe_require("cmp")
+    local luasnip = safe_require("luasnip")
+    if not (cmp and luasnip) then return end
 
-  { "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
-    },
-    config = function()
-      local cmp     = safe_require("cmp")
-      local luasnip = safe_require("luasnip")
-      if not (cmp and luasnip) then return end
+    cmp.setup({
+      snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
+      mapping = cmp.mapping.preset.insert({
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<CR>"]      = cmp.mapping.confirm({ select = true }),
+        ["<Tab>"]     = cmp.mapping.select_next_item(),
+        ["<S-Tab>"]   = cmp.mapping.select_prev_item(),
+      }),
+      sources = {
+        { name = "nvim_lsp" },
+        { name = "luasnip"  },
+      },
+    })
+  end,
+},
 
-      cmp.setup({
-        snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"]      = cmp.mapping.confirm({ select = true }),
-          ["<Tab>"]     = cmp.mapping.select_next_item(),
-          ["<S-Tab>"]   = cmp.mapping.select_prev_item(),
-        }),
-        sources = {
-          { name = "nvim_lsp" },
-          { name = "luasnip"  },
-        },
-      })
-    end,
-  },
+---------------------------------------------------------------------------
+--  Treesitter -------------------------------------------------------------
+---------------------------------------------------------------------------
+{ "nvim-treesitter/nvim-treesitter",
+  build  = ":TSUpdate",
+  config = function()
+    safe_require("nvim-treesitter.configs").setup({
+      ensure_installed = {
+        -- Web
+        "html", "css", "scss", "javascript", "typescript", "json",
 
-  ---------------------------------------------------------------------------
-  --  Treesitter -------------------------------------------------------------
-  ---------------------------------------------------------------------------
-  { "nvim-treesitter/nvim-treesitter",
-    build  = ":TSUpdate",
-    config = function()
-      safe_require("nvim-treesitter.configs").setup({
-        ensure_installed = { "python", "bash", "lua" },
-        highlight        = { enable = true },
-      })
-    end,
-  },
+        -- Backend
+        "python", "bash", "lua", "go", "rust", "c", "cpp", "java", "kotlin",
+        "perl", "php", "ruby", "elixir",
+
+        -- Infra / Scripting
+        "dockerfile", "yaml", "toml", "make", "terraform",
+
+        -- Markup / Docs
+        "markdown", "markdown_inline", "latex",
+
+        -- Misc
+        "sql", "graphql", "regex",
+      },
+      highlight = { enable = true },
+    })
+  end,
+},
+
 
   ---------------------------------------------------------------------------
   --  File explorer ----------------------------------------------------------
