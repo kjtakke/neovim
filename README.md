@@ -122,6 +122,49 @@ rm -rf ~/nvim-clone
 nvim
 ```
 
+## 🧠 Neovim Essentials Cheat Sheet – For Senior Developers (Beginner to NVim)
+
+| **Category** | **Command / Shortcut** | **Description** |
+| --- | --- | --- |
+| 🔀 **Navigation** | `h` `j` `k` `l` | Move left / down / up / right |
+| \-  | `gg` / `G` | Go to start / end of file |
+| \-  | `w` / `b` | Move to next / previous word |
+| \-  | `^` / `$` | Start / end of line |
+| \-  | `%` | Jump to matching bracket/brace/parenthesis |
+| ✍️ **Editing** | `i` / `I` | Insert before cursor / at start of line |
+| \-  | `a` / `A` | Append after cursor / at end of line |
+| \-  | `o` / `O` | Open new line below / above |
+| \-  | `r<char>` / `R` | Replace single char / enter replace mode |
+| \-  | `cw` / `cc` / `C` | Change word / line / to end of line |
+| ✂️ **Cut / Copy / Paste** | `x` / `dd` / `d$` | Delete char / line / to end of line |
+| \-  | `yy` / `yw` | Yank line / word |
+| \-  | `p` / `P` | Paste after / before cursor |
+| 🔄 **Undo / Redo** | `u` / `Ctrl + r` | Undo / Redo |
+| \-  | `U` | Undo changes on current line |
+| 🔎 **Search** | `/pattern` / `?pattern` | Search forward / backward |
+| \-  | `n` / `N` | Repeat last search forward / backward |
+| \-  | `*` / `#` | Search word under cursor forward / backward |
+| \-  | `:noh` | Clear search highlights |
+| 🧱 **Visual Mode** | `v` / `V` / `Ctrl + v` | Start char / line / block selection |
+| \-  | `y` / `d` / `>` / `<` | Yank / delete / indent / un-indent selection |
+| 💾 **Files & Buffers** | `:e <file>` / `:w` / `:q` | Edit / write / quit |
+| \-  | `:wq` / `ZZ` | Write and quit |
+| \-  | `:bd` / `:ls` / `:bn` / `:bp` | Delete / list / next / previous buffer |
+| 🪟 **Splits** | `:sp` / `:vsp` | Horizontal / vertical split |
+| \-  | `Ctrl-w h/j/k/l` | Move across splits |
+| \-  | `Ctrl-w q` / `=` | Quit split / equalise sizes |
+| 🗂️ **Tabs** | `:tabnew` / `:tabclose` | Open / close tab |
+| \-  | `gt` / `gT` | Next / previous tab |
+| 🖥️ **Terminal** | `:terminal` | Open terminal in current window |
+| \-  | `Ctrl-\ Ctrl-n` | Exit terminal insert mode |
+| 🧠 **Help / Docs** | `:help <topic>` | Access help system |
+| \-  | `:syntax on` | Enable syntax highlighting |
+| 💡 **Plugins (Typical)** | `fg` / `ff` / `gc` | Live grep / file find / comment toggle (e.g., Telescope) |
+| 🚀 **Quick Tips** | `.` | Repeat last change |
+| \-  | `:! <cmd>` | Run shell command |
+| \-  | `:set number` | Show line numbers |
+| 🧠 **AI Assistant** | `/ai` / `/s` | Open GUI / Submit AI request (if configured) |
+
 ## NeoVim Command Reference
 
 Below is a comprehensive list of NeoVim commands categorised by functionality. These commands adhere to the principle of least astonishment, ensuring intuitive and consistent user interactions.
