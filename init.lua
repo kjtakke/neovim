@@ -46,49 +46,58 @@ require("lazy").setup({
     vim.cmd.colorscheme("catppuccin")
   end,
 },
-{
-  "github/copilot.vim",
-  lazy = false,
+  {
+    "github/copilot.vim",
+    lazy = false,
+  },
 
 
 ---------------------------------------------------------------------------
 --  LSP / Mason / Completion ----------------------------------------------
 ---------------------------------------------------------------------------
-{ "neovim/nvim-lspconfig" },
+{
+  "neovim/nvim-lspconfig",
+},
 
-{ "williamboman/mason.nvim", build = ":MasonUpdate", config = function()
+{
+  "williamboman/mason.nvim",
+  build = ":MasonUpdate",
+  config = function()
     safe_require("mason").setup()
-  end },
+  end,
+},
 
-{ "williamboman/mason-lspconfig.nvim",
+{
+  "williamboman/mason-lspconfig.nvim",
   dependencies = { "williamboman/mason.nvim" },
   config = function()
     safe_require("mason-lspconfig").setup({
       ensure_installed = {
         -- Web
-        "html", "cssls", "emmet_ls", "tsserver", "eslint", "jsonls",
+        "html", "cssls", "emmet_ls", "vtsls", "eslint", "jsonls",
 
         -- Backend
         "pyright", "bashls", "lua_ls", "gopls", "rust_analyzer",
-        "clangd", "dockerls", "yamlls", "marksman", "graphql",
+        "clangd", "dockerls", "yamlls", "graphql",
 
         -- Java / .NET / JVM
         "jdtls", "kotlin_language_server", "lemminx", "omnisharp",
 
         -- Database / Configs
-        "sqlls", "jsonls", "yamlls", "taplo", -- toml
+        "sqlls", "taplo",
 
         -- Others
         "perlpls", "powershell_es", "ansiblels", "terraformls",
 
         -- Markdown and docs
-        "marksman", "ltex", -- language tool for grammar
+        "marksman", "ltex",
       },
     })
   end,
 },
 
-{ "hrsh7th/nvim-cmp",
+{
+  "hrsh7th/nvim-cmp",
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
     "L3MON4D3/LuaSnip",
@@ -100,7 +109,11 @@ require("lazy").setup({
     if not (cmp and luasnip) then return end
 
     cmp.setup({
-      snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
+      snippet = {
+        expand = function(args)
+          luasnip.lsp_expand(args.body)
+        end,
+      },
       mapping = cmp.mapping.preset.insert({
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<CR>"]      = cmp.mapping.confirm({ select = true }),
@@ -118,28 +131,32 @@ require("lazy").setup({
 ---------------------------------------------------------------------------
 --  Treesitter -------------------------------------------------------------
 ---------------------------------------------------------------------------
-{ "nvim-treesitter/nvim-treesitter",
-  build  = ":TSUpdate",
+
+{
+  "nvim-treesitter/nvim-treesitter",
+  build = ":TSUpdate",
   config = function()
     safe_require("nvim-treesitter.configs").setup({
       ensure_installed = {
         -- Web
-        "html", "css", "scss", "javascript", "typescript", "json",
+        "css", "html", "javascript", "json", "scss", "typescript",
 
-        -- Backend
-        "python", "bash", "lua", "go", "rust", "c", "cpp", "java", "kotlin",
-        "perl", "php", "ruby", "elixir",
+        -- Backend / General-purpose
+        "bash", "c", "cpp", "elixir", "go", "java", "kotlin",
+        "lua", "perl", "php", "python", "ruby", "rust",
 
         -- Infra / Scripting
-        "dockerfile", "yaml", "toml", "make", "terraform",
+        "dockerfile", "make", "terraform", "toml", "yaml",
 
         -- Markup / Docs
-        "markdown", "markdown_inline", "latex",
+        "latex", "markdown", "markdown_inline",
 
-        -- Misc
-        "sql", "graphql", "regex",
+        -- Other
+        "graphql", "regex", "sql",
       },
-      highlight = { enable = true },
+      highlight = {
+        enable = true,
+      },
     })
   end,
 },
@@ -154,8 +171,14 @@ require("lazy").setup({
       { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle File Tree" },
     },
     config = function()
-      safe_require("nvim-tree").setup()
-    end,
+     safe_require("nvim-tree").setup({
+       filters = {
+         custom = {".git"},
+         exclude = {}
+       },
+       respect_buf_cwd = false,
+     })
+   end,
   },
 
   ---------------------------------------------------------------------------
@@ -190,29 +213,9 @@ require("lazy").setup({
   { "mg979/vim-visual-multi",   branch = "master" },
 })
 
--------------------------------------------------------------------------------
---  LSP servers --------------------------------------------------------------
--------------------------------------------------------------------------------
-local lspconfig = safe_require("lspconfig")
-if lspconfig then
-  -- capabilities → allow cmp‑nvim‑lsp to advertise completion capabilities
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  local cmp_caps     = safe_require("cmp_nvim_lsp")
-  if cmp_caps then capabilities = cmp_caps.default_capabilities(capabilities) end
 
-  -- Python (Pyright)
-  lspconfig.pyright.setup({
-    capabilities = capabilities,
-  })
 
-  -- Bash
-  lspconfig.bashls.setup({
-    filetypes   = { "sh", "zsh", "bash" },
-    capabilities = capabilities,
-  })
-end
-
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 --  Options ------------------------------------------------------------------
 -------------------------------------------------------------------------------
 vim.opt.number       = true
@@ -352,16 +355,15 @@ end
 
 vim.api.nvim_create_user_command('Wtsh', run_shellcheck, {})
 
-
 -- Map <leader>b to :G blame using vim-fugitive
 vim.keymap.set('n', '<leader>b', ':G blame<CR>', { noremap = true, silent = true, desc = 'Git Blame' })
-
 
 -- Directional window navigation with Ctrl + Arrow keys
 vim.keymap.set('n', '<C-Right>', '<C-w>l', { noremap = true, silent = true })  -- right
 vim.keymap.set('n', '<C-Left>',  '<C-w>h', { noremap = true, silent = true })  -- left
 vim.keymap.set('n', '<C-Down>',  '<C-w>j', { noremap = true, silent = true })  -- down
 vim.keymap.set('n', '<C-Up>',    '<C-w>k', { noremap = true, silent = true })  -- up
+
 
 -- Enable spellcheck with Australian English for specific filetypes
 vim.api.nvim_create_autocmd({ "FileType" }, {
@@ -384,6 +386,9 @@ vim.opt.spellfile = spell_dir .. "/en.utf-8.add"
 
 -- Map <leader>z to add word under cursor to spellfile
 vim.keymap.set("n", "<leader>z", "zg", { desc = "Add word to dictionary" })
+
+
+
 
 -- Define a Neovim command :NSearch <phrase> to search ~/.config/nvim/nsearch.txt
 vim.api.nvim_create_user_command("NSearch", function(opts)
