@@ -189,3 +189,11 @@ fg | Live Grep (plugin command) | Plugin
 ff | File Grep (plugin command) | Plugin
 gc | Toggle comment on highlighted lines | Plugin
 
+# ======================
+# COPILOT
+# ======================
+:Copilot | Open Copilot panel | Copilot
+:Copilot enable | Enable Copilot | Copilot
+:Copilot disable | Disable Copilot | Copilot
+:Copilot status | Show Copilot status | Copilot
+CtrL + B B | Accept Copilot suggestion | Copilot
