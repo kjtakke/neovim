@@ -451,3 +451,12 @@ end, {
   desc = "Search ~/.config/nvim/nsearch.txt (case-insensitive)",
 })
 
+-- Disable Copilot’s default Tab mapping
+vim.g.copilot_no_tab_map = true
+
+-- Map <C-b> to accept Copilot suggestion in insert mode
+vim.api.nvim_set_keymap("i", "<C-b>", 'copilot#Accept("<CR>")', {
+  expr = true,
+  silent = true,
+  noremap = true
+})
