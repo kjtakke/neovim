@@ -460,3 +460,13 @@ vim.api.nvim_set_keymap("i", "<C-b>", 'copilot#Accept("<CR>")', {
   silent = true,
   noremap = true
 })
+
+vim.opt.list = true
+vim.opt.listchars = {
+  tab = '▸ ',       -- Shows tabs as ▸ followed by space
+  trail = '·',      -- Shows trailing spaces as ·
+  eol = '↴',        -- End-of-line marker
+  extends = '❯',    -- Character to show when line is too long
+  precedes = '❮',   -- Character to show before the beginning of line
+  space = '·',      -- Optional: shows all spaces as ·
+}
