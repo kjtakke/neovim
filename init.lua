@@ -470,3 +470,9 @@ vim.opt.listchars = {
   precedes = '❮',   -- Character to show before the beginning of line
   space = '·',      -- Optional: shows all spaces as ·
 }
+
+-- Ensure Treesitter highlights aren't overridden
+vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = "#ff69b4" }) -- pink brackets
+vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg = "#ff69b4" }) -- pink braces
+
+
