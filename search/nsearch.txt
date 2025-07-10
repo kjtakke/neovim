@@ -196,4 +196,4 @@ gc | Toggle comment on highlighted lines | Plugin
 :Copilot enable | Enable Copilot | Copilot
 :Copilot disable | Disable Copilot | Copilot
 :Copilot status | Show Copilot status | Copilot
-CtrL + B B | Accept Copilot suggestion | Copilot
+CtrL + B | Accept Copilot suggestion | Copilot
