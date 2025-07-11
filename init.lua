@@ -475,4 +475,9 @@ vim.opt.listchars = {
 vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = "#ff69b4" }) -- pink brackets
 vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg = "#ff69b4" }) -- pink braces
 
-
+-- Function to show TODOs in a popup
+vim.api.nvim_create_user_command("Todo", function()
+  require("telescope.builtin").live_grep({
+    default_text = "TODO",
+  })
+end, {})
