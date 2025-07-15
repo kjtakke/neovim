@@ -481,3 +481,17 @@ vim.api.nvim_create_user_command("Todo", function()
     default_text = "TODO",
   })
 end, {})
+
+-- Set a bright cursor colour for dark themes
+vim.cmd([[
+  highlight Cursor guifg=NONE guibg=Gold gui=NONE ctermfg=NONE ctermbg=Yellow cterm=NONE
+]])
+
+-- Configure the cursor shape and highlight group
+vim.opt.guicursor = table.concat({
+  "n-v-c:block-Cursor",      -- Normal, Visual, Command: block
+  "i-ci-ve:ver25-Cursor",    -- Insert and variants: vertical bar
+  "r-cr:hor20-Cursor",       -- Replace: underscore
+  "o:hor50-Cursor",          -- Operator-pending: underscore
+  "a:blinkon0"               -- Disable blinking
+}, ",")
