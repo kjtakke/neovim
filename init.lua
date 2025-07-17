@@ -500,3 +500,12 @@ vim.opt.guicursor = table.concat({
   "o:hor50-Cursor",          -- Operator-pending: underscore
   "a:blinkon0"               -- Disable blinking
 }, ",")
+
+-- <leader> fg + search for text
+vim.keymap.set("n", "<leader>gf", function()
+  local word = vim.fn.expand("<cword>")
+  if word and word ~= "" then
+    local query = "^(func|var) " .. word
+    require("telescope.builtin").live_grep({ default_text = query })
+  end
+end, { noremap = true, silent = true })
