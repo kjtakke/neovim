@@ -505,7 +505,8 @@ vim.opt.guicursor = table.concat({
 vim.keymap.set("n", "<leader>gf", function()
   local word = vim.fn.expand("<cword>")
   if word and word ~= "" then
-    local query = "^(func|var) " .. word
+    local query = "^(func|var|type|const) " .. word
     require("telescope.builtin").live_grep({ default_text = query })
   end
 end, { noremap = true, silent = true })
+
