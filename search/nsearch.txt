@@ -197,3 +197,9 @@ gc | Toggle comment on highlighted lines | Plugin
 :Copilot disable | Disable Copilot | Copilot
 :Copilot status | Show Copilot status | Copilot
 CtrL + B | Accept Copilot suggestion | Copilot
+
+
+# ======================
+# GO Func and Var Search
+# ======================
+\gf | RipGrep on selected var or func on GO | GO func var Finder
