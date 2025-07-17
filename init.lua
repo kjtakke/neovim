@@ -172,6 +172,11 @@ require("lazy").setup({
     },
     config = function()
      safe_require("nvim-tree").setup({
+     view = {
+      width = 50, 
+      side = "left",
+      preserve_window_proportions = true,
+    },
        filters = {
          custom = {".git"},
          exclude = {}
