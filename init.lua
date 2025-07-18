@@ -508,5 +508,17 @@ vim.keymap.set("n", "<leader>gf", function()
     local query = "^(func|var|type|const) " .. word
     require("telescope.builtin").live_grep({ default_text = query })
   end
+
 end, { noremap = true, silent = true })
+
+
+-- ai_ui.lua
+vim.api.nvim_create_user_command("Models", function()
+  require("ai_ui").show_models()
+end, {})
+
+vim.api.nvim_create_user_command("ChangeModel", function(opts)
+  require("ai_ui").change_model(opts.args)
+end, { nargs = 1 })
+
 
