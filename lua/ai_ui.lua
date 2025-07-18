@@ -268,4 +268,13 @@ function M.load_history()
   vim.api.nvim_win_set_cursor(answer_win, { line_count, 0 })
 end
 
+-- ai_ui.lua
+vim.api.nvim_create_user_command("Models", function()
+  require("ai_ui").show_models()
+end, {})
+
+vim.api.nvim_create_user_command("ChangeModel", function(opts)
+  require("ai_ui").change_model(opts.args)
+end, { nargs = 1 })
+
 return M
