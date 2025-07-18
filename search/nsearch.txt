@@ -97,6 +97,8 @@ ZQ | Quit without saving (normal mode) | File & Buffeir
 /f  | Append upto 1000 lines  | AI Assistant
 /z  | Resize pane for easy copying  | AI Assistant
 /a  | Reset/Clear Chat | AI Assistant
+:Models  | Get Chat Models | AI Assistant
+:ChangeModel <modelName>  | Change Chat Models | AI Assistant
 
 # ======================
 # SEARCH
