@@ -517,6 +517,15 @@ vim.api.nvim_create_user_command("Models", function()
   require("ai_ui").show_models()
 end, {})
 
+
+vim.keymap.set("n", "<leader>gd", function()
+  local word = vim.fn.expand("<cword>")
+  if word and word ~= "" then
+    local query = word .. "\\("
+    require("telescope.builtin").live_grep({ default_text = query })
+  end
+end, { noremap = true, silent = true })
+
 vim.api.nvim_create_user_command("ChangeModel", function(opts)
   require("ai_ui").change_model(opts.args)
 end, { nargs = 1 })
