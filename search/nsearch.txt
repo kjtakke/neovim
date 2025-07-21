@@ -205,3 +205,4 @@ CtrL + B | Accept Copilot suggestion | Copilot
 # GO Func and Var Search
 # ======================
 \gf | RipGrep on selected var or func on GO | GO func var Finder
+\gd | RipGrep on selected func | GO func var Finder
