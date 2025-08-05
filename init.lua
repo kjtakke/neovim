@@ -1,4 +1,4 @@
--- ============================================================================
+===========================
 --  Neovim configuration (lazy‑nvim edition)                                   
 --  Keeps prior behaviour, now wires cmp → LSP so Python IntelliSense works.   
 --  Australian / British spelling.                                             
@@ -50,7 +50,16 @@ require("lazy").setup({
     "github/copilot.vim",
     lazy = false,
   },
-
+---------------------------------------------------------------------------
+-- Multi Cursor -----------------------------------------------------------
+---------------------------------------------------------------------------
+{
+  "mg979/vim-visual-multi",
+  branch = "master",
+  init = function()
+    vim.g.VM_default_mappings = 0  -- we'll define our own
+  end
+},
 
 ---------------------------------------------------------------------------
 --  LSP / Mason / Completion ----------------------------------------------
@@ -173,7 +182,7 @@ require("lazy").setup({
     config = function()
      safe_require("nvim-tree").setup({
      view = {
-      width = 50, 
+      width = 50,  -- Approx. 600px
       side = "left",
       preserve_window_proportions = true,
     },
@@ -456,6 +465,7 @@ end, {
   desc = "Search ~/.config/nvim/nsearch.txt (case-insensitive)",
 })
 
+
 -- Disable Copilot’s default Tab mapping
 vim.g.copilot_no_tab_map = true
 
@@ -466,6 +476,8 @@ vim.api.nvim_set_keymap("i", "<C-b>", 'copilot#Accept("<CR>")', {
   noremap = true
 })
 
+
+
 vim.opt.list = true
 vim.opt.listchars = {
   tab = '▸ ',       -- Shows tabs as ▸ followed by space
@@ -475,6 +487,7 @@ vim.opt.listchars = {
   precedes = '❮',   -- Character to show before the beginning of line
   space = '·',      -- Optional: shows all spaces as ·
 }
+
 
 -- Ensure Treesitter highlights aren't overridden
 vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = "#ff69b4" }) -- pink brackets
@@ -487,19 +500,24 @@ vim.api.nvim_create_user_command("Todo", function()
   })
 end, {})
 
--- Set a bright cursor colour for dark themes
+
+-- Highlight the cursor with a bright red background
+-- This affects the visible cursor block/bar/underscore depending on mode
 vim.cmd([[
   highlight Cursor guifg=NONE guibg=Gold gui=NONE ctermfg=NONE ctermbg=Yellow cterm=NONE
 ]])
 
--- Configure the cursor shape and highlight group
+-- Set the cursor shape and link it to the Cursor highlight group
+-- Covers Normal, Visual, Command, Insert, Replace, and Operator-pending modes
 vim.opt.guicursor = table.concat({
-  "n-v-c:block-Cursor",      -- Normal, Visual, Command: block
-  "i-ci-ve:ver25-Cursor",    -- Insert and variants: vertical bar
-  "r-cr:hor20-Cursor",       -- Replace: underscore
-  "o:hor50-Cursor",          -- Operator-pending: underscore
+  "n-v-c:block-Cursor",      -- Normal, Visual, Command: block shape
+  "i-ci-ve:ver25-Cursor",    -- Insert, Command-line Insert, Visual Exclusive: vertical bar
+  "r-cr:hor20-Cursor",       -- Replace, Command-line Replace: horizontal underscore
+  "o:hor50-Cursor",          -- Operator-pending mode: horizontal underscore
   "a:blinkon0"               -- Disable blinking
 }, ",")
+
+
 
 -- <leader> fg + search for text
 vim.keymap.set("n", "<leader>gf", function()
@@ -508,14 +526,7 @@ vim.keymap.set("n", "<leader>gf", function()
     local query = "^(func|var|type|const) " .. word
     require("telescope.builtin").live_grep({ default_text = query })
   end
-
 end, { noremap = true, silent = true })
-
-
--- ai_ui.lua
-vim.api.nvim_create_user_command("Models", function()
-  require("ai_ui").show_models()
-end, {})
 
 
 vim.keymap.set("n", "<leader>gd", function()
@@ -526,8 +537,35 @@ vim.keymap.set("n", "<leader>gd", function()
   end
 end, { noremap = true, silent = true })
 
+-- ai_ui.lua
+vim.api.nvim_create_user_command("Models", function()
+  require("ai_ui").show_models()
+end, {})
+
 vim.api.nvim_create_user_command("ChangeModel", function(opts)
   require("ai_ui").change_model(opts.args)
 end, { nargs = 1 })
 
 
+-- Multiple cursor mappings
+local map = vim.keymap.set
+local opts = { noremap = true, silent = true }
+
+-- Add cursor above or below (requires visual-multi plugin)
+map("n", "<A-Up>", "<Plug>(VM-Add-Cursor-Up)", {})
+map("n", "<A-Down>", "<Plug>(VM-Add-Cursor-Down)", {})
+map("i", "<A-Up>", "<Esc><Plug>(VM-Add-Cursor-Up)i", {})
+map("i", "<A-Down>", "<Esc><Plug>(VM-Add-Cursor-Down)i", {})
+
+-- Start multi-cursor mode with Alt+Click
+vim.cmd([[
+  let g:VM_mouse_mappings = 1
+]])
+vim.g.VM_show_insert_mode = 1
+vim.g.VM_set_statusline = 0 -- Optional: prevents statusline override
+vim.api.nvim_set_hl(0, 'VM_Cursor', { fg = '#FFD700', bg = 'NONE', underline = true })
+vim.api.nvim_set_hl(0, 'VM_Insert', { fg = '#FFD700', bg = 'NONE', underline = true })
+vim.api.nvim_set_hl(0, 'VM_Extend', { fg = '#FFD700', bg = 'NONE', underline = true })
+vim.api.nvim_set_hl(0, 'VM_Mono',   { fg = '#FFD700', bg = 'NONE', underline = true })
+vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
+vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver1,r-cr-o:hor20"
