@@ -1,4 +1,4 @@
-===========================
+-- ============================================================================
 --  Neovim configuration (lazy‑nvim edition)                                   
 --  Keeps prior behaviour, now wires cmp → LSP so Python IntelliSense works.   
 --  Australian / British spelling.                                             
@@ -569,3 +569,73 @@ vim.api.nvim_set_hl(0, 'VM_Extend', { fg = '#FFD700', bg = 'NONE', underline = t
 vim.api.nvim_set_hl(0, 'VM_Mono',   { fg = '#FFD700', bg = 'NONE', underline = true })
 vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver1,r-cr-o:hor20"
+
+-- CTRL Select Navigate
+local map = vim.keymap.set
+
+-- Smart Ctrl+Right
+map("n", "<C-Right>", function()
+  local col = vim.fn.col(".")
+  local line = vim.fn.getline(".")
+  local char = line:sub(col, col)
+
+  if char:match("%s") then
+    vim.cmd("normal! w")
+  elseif char:match("%w") then
+    if col == 1 or not line:sub(col - 1, col - 1):match("%w") then
+      vim.cmd("normal! e") -- at start of word
+    else
+      vim.cmd("normal! w") -- at end or mid word
+    end
+  else
+    vim.cmd("normal! w") -- symbol or anything else
+  end
+end, { noremap = true, silent = true })
+
+-- Smart Ctrl+Left
+map("n", "<C-Left>", function()
+  local col = vim.fn.col(".")
+  local line = vim.fn.getline(".")
+  local char = line:sub(col, col)
+
+  if char:match("%s") then
+    vim.cmd("normal! b")
+  elseif char:match("%w") then
+    if col > 1 and not line:sub(col - 1, col - 1):match("%w") then
+      vim.cmd("normal! b") -- at start
+    else
+      vim.cmd("normal! ge") -- inside or at end
+    end
+  else
+    vim.cmd("normal! b")
+  end
+end, { noremap = true, silent = true })
+local map = vim.keymap.set
+
+-- Ctrl + Shift + Right = select to next word end
+local map = vim.keymap.set
+
+-- Select word right
+map({ "n", "v" }, "<C-S-Right>", function()
+  if vim.fn.mode() == "n" then vim.cmd("normal! v") end
+  vim.cmd("normal! e")
+end, { noremap = true, silent = true })
+
+-- Select word left
+map({ "n", "v" }, "<C-S-Left>", function()
+  if vim.fn.mode() == "n" then vim.cmd("normal! v") end
+  vim.cmd("normal! b")
+end, { noremap = true, silent = true })
+
+-- Select line down
+map({ "n", "v" }, "<C-S-Down>", function()
+  if vim.fn.mode() == "n" then vim.cmd("normal! V") end
+  vim.cmd("normal! j")
+end, { noremap = true, silent = true })
+
+-- Select line up
+map({ "n", "v" }, "<C-S-Up>", function()
+  if vim.fn.mode() == "n" then vim.cmd("normal! V") end
+  vim.cmd("normal! k")
+end, { noremap = true, silent = true })
+
