@@ -379,9 +379,19 @@ vim.keymap.set('n', '<C-Down>',  '<C-w>j', { noremap = true, silent = true })  -
 vim.keymap.set('n', '<C-Up>',    '<C-w>k', { noremap = true, silent = true })  -- up
 
 
--- Enable spellcheck with Australian English for specific filetypes
+-- Enable spellcheck with Australian English for a wide array of filetypes
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "markdown", "gitcommit", "text", "python" },
+  pattern = {
+    -- Original filetypes
+    "markdown", "gitcommit", "text", "python",
+    -- Extended: Text/markup/documentation
+    "rst", "tex", "html", "xml", "json", "yaml", "toml", "mail", "help",
+    -- Extended: Programming/scripting (including Go, useful for comments)
+    "go", "lua", "vim", "javascript", "typescript", "css",
+    "sh", "bash", "zsh", "c", "cpp", "java", "rust", "php", "ruby", "perl",
+    -- Extended: Other common (e.g., config/build)
+    "dockerfile", "make", "sql"
+  },
   callback = function()
     vim.opt_local.spell = true
     vim.opt_local.spelllang = "en_au"
@@ -638,4 +648,5 @@ map({ "n", "v" }, "<C-S-Up>", function()
   if vim.fn.mode() == "n" then vim.cmd("normal! V") end
   vim.cmd("normal! k")
 end, { noremap = true, silent = true })
+
 
