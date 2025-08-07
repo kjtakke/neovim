@@ -1,3 +1,5 @@
+vim.opt.termguicolors = true
+
 -- ============================================================================
 --  Neovim configuration (lazy‑nvim edition)                                   
 --  Keeps prior behaviour, now wires cmp → LSP so Python IntelliSense works.   
@@ -312,6 +314,52 @@ local function run_pylint()
   end
 end
 
+-- Function to run golangci-lint and display filtered output
+local function run_golint()
+  vim.cmd('write')
+  local filename = vim.fn.expand('%')
+  local handle = io.popen('golangci-lint run "' .. filename .. '" 2>&1')
+  if handle then
+    local output = handle:read('*a')
+    handle:close()
+
+    local filtered_output = {}
+    for line in output:gmatch('[^\r\n]+') do
+      -- Example filter: only show issues with severity "error"
+      if line:match(":%d+:%d+:") then
+        table.insert(filtered_output, line)
+      end
+    end
+
+    if #filtered_output == 0 then
+      table.insert(filtered_output, "✅ No issues found!")
+    end
+
+    local ui = vim.api.nvim_list_uis()[1]
+    local width = math.floor(ui.width * 0.6)
+    local height = math.floor(ui.height * 0.6)
+    local col = math.floor((ui.width - width) / 2)
+    local row = math.floor((ui.height - height) / 2)
+    local bufnr = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, filtered_output)
+    vim.api.nvim_open_win(bufnr, true, {
+      style = "minimal",
+      relative = "editor",
+      width = width,
+      height = height,
+      col = col,
+      row = row,
+      border = "rounded"
+    })
+  else
+    vim.notify("Failed to run golangci-lint")
+  end
+end
+
+-- Create the custom command :Wg
+vim.api.nvim_create_user_command('Wg', run_golint, {})
+
+
 -- Create the custom command :Wt
 vim.api.nvim_create_user_command('Wt', run_pylint, {})
 
@@ -398,7 +446,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
-
 -- Define and create the spell directory if it doesn't exist
 local spell_dir = vim.fn.stdpath("config") .. "/spell"
 if vim.fn.isdirectory(spell_dir) == 0 then
@@ -410,6 +457,85 @@ vim.opt.spellfile = spell_dir .. "/en.utf-8.add"
 
 -- Map <leader>z to add word under cursor to spellfile
 vim.keymap.set("n", "<leader>z", "zg", { desc = "Add word to dictionary" })
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.cmd("highlight SpellBad gui=undercurl guisp=Red")
+  end,
+})
+
+-- Trigger immediately if a colourscheme is already set
+vim.cmd("highlight SpellBad gui=undercurl guisp=Red")
+
+
+local function show_spellcheck_issues_aligned()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local total_lines = #lines
+
+  -- Prepare padded results for alignment
+  local padded_results = {}
+  for i = 1, total_lines do
+    padded_results[i] = ""
+  end
+
+  for i, line in ipairs(lines) do
+    local col = 0
+    while col < #line do
+      local spell_result = vim.fn.spellbadword(line:sub(col + 1))
+      local bad_word = spell_result[1]
+
+      if bad_word and bad_word ~= "" then
+        local rel_start = line:sub(col + 1):find(bad_word, 1, true)
+        if rel_start then
+          local abs_start = col + rel_start
+          padded_results[i] = string.format("Line %-4d | %-20s | %s", i, bad_word, line)
+          break  -- Only show first issue per line
+        else
+          col = col + 1
+        end
+      else
+        break
+      end
+    end
+  end
+
+  if vim.tbl_isempty(vim.tbl_filter(function(x) return x ~= "" end, padded_results)) then
+    vim.notify("No spelling issues found.", vim.log.levels.INFO)
+    return
+  end
+
+  -- Save current window ID
+  local main_win = vim.api.nvim_get_current_win()
+
+  -- Force split on the right
+  vim.cmd("rightbelow vsplit")
+
+  -- Create and assign new buffer to the right split
+  local split_buf = vim.api.nvim_create_buf(false, true)
+  local split_win = vim.api.nvim_get_current_win()
+  vim.api.nvim_win_set_buf(split_win, split_buf)
+
+  -- Set buffer content and options
+  vim.api.nvim_buf_set_lines(split_buf, 0, -1, false, padded_results)
+  vim.api.nvim_buf_set_option(split_buf, "bufhidden", "wipe")
+  vim.api.nvim_buf_set_option(split_buf, "filetype", "spellcheck")
+  vim.api.nvim_buf_set_option(split_buf, "modifiable", false)
+  vim.api.nvim_buf_set_option(split_buf, "readonly", true)
+  vim.api.nvim_buf_set_option(split_buf, "wrap", false)
+
+  -- Scroll synchronisation only
+  vim.api.nvim_win_set_option(main_win, "scrollbind", true)
+  vim.api.nvim_win_set_option(split_win, "scrollbind", true)
+
+  -- No cursorbind — we're aligning by line number only
+  vim.api.nvim_win_set_cursor(main_win, {1, 0})
+  vim.api.nvim_win_set_cursor(split_win, {1, 0})
+end
+
+vim.keymap.set("n", "<leader>sc", show_spellcheck_issues_aligned, {
+  desc = "Show spelling issues in aligned right split"
+})
+
 
 
 
@@ -648,5 +774,4 @@ map({ "n", "v" }, "<C-S-Up>", function()
   if vim.fn.mode() == "n" then vim.cmd("normal! V") end
   vim.cmd("normal! k")
 end, { noremap = true, silent = true })
-
 
