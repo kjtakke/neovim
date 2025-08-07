@@ -35,6 +35,7 @@ cw | Change word | Editing
 C | Change to end of line | Editing
 J | Join lines | Editing
 \z | Add Word to Dictionary | Editing
+\sc | Spell Sheck | Editing
 
 # ======================
 # FOLDING (BUILT-IN)
@@ -206,3 +207,4 @@ CtrL + B | Accept Copilot suggestion | Copilot
 # ======================
 \gf | RipGrep on selected var or func on GO | GO func var Finder
 \gd | RipGrep on selected func | GO func var Finder
+
