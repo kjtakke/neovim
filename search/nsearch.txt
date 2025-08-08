@@ -212,3 +212,13 @@ CtrL + B | Accept Copilot suggestion | Copilot
 # Previewing Files
 # ======================
 /mp | Preview Markdown in Browser | Preview Files
+
+# ======================
+# TODO Comments
+# ======================
+]t  | Jump to next TODO/FIX/WARN            | Navigate Todos
+[t  | Jump to previous TODO/FIX/WARN        | Navigate Todos
+\td | List TODOs in Telescope               | Todo Finder
+\tq | Send TODOs to Quickfix list           | Todo Finder
+\tl | Send TODOs to Location list           | Todo Finder
+\tt | Show TODOs in Trouble (if installed)  | Todo Finder
