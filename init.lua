@@ -30,6 +30,29 @@ end
 --  Plug‑in spec --------------------------------------------------------------
 -------------------------------------------------------------------------------
 require("lazy").setup({
+  -- Markdown preview plugin
+{
+  "iamcco/markdown-preview.nvim",
+  ft = { "markdown" },
+  build = "cd app && npm install",  -- ✅ avoids mkdp#util#install timing issues
+  init = function()
+    -- Behaviour
+    vim.g.mkdp_auto_start = 0
+    vim.g.mkdp_auto_close = 1
+    vim.g.mkdp_refresh_slow = 0
+    vim.g.mkdp_command_for_global = 0
+    -- Server / networking
+    vim.g.mkdp_open_to_the_world = 0
+    vim.g.mkdp_open_ip = "127.0.0.1"
+    vim.g.mkdp_port = "8080"
+    -- Appearance
+    vim.g.mkdp_theme = "dark"
+  end,
+  keys = {
+    { "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview (HTTP)" },
+  },
+},
+
   ---------------------------------------------------------------------------
   --  Colourscheme -----------------------------------------------------------
   ---------------------------------------------------------------------------
@@ -774,4 +797,5 @@ map({ "n", "v" }, "<C-S-Up>", function()
   if vim.fn.mode() == "n" then vim.cmd("normal! V") end
   vim.cmd("normal! k")
 end, { noremap = true, silent = true })
+
 
