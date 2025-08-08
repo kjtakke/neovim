@@ -30,6 +30,42 @@ end
 --  Plug‑in spec --------------------------------------------------------------
 -------------------------------------------------------------------------------
 require("lazy").setup({
+
+  -- TODO
+  {
+  "folke/todo-comments.nvim",
+  dependencies = { "nvim-lua/plenary.nvim" },
+  event = { "BufReadPost", "BufNewFile" },
+  opts = {
+    signs = true,
+    highlight = {
+      keyword = "bg",        -- highlight the whole keyword
+      after = "fg",          -- colour the text after the keyword a bit
+    },
+    search = {               -- uses ripgrep
+      command = "rg",
+      args = { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column" },
+      pattern = [[\b(KEYWORDS):]], -- leave as-is
+    },
+    keywords = {
+      TODO  = { icon = " ", colour = "info" },
+      FIX   = { icon = " ", colour = "error", alt = { "FIXME", "BUG" } },
+      WARN  = { icon = " ", colour = "warning", alt = { "WARNING" } },
+      NOTE  = { icon = " ", colour = "hint", alt = { "INFO" } },
+      PERF  = { icon = " ", colour = "default", alt = { "PERFORMANCE" } },
+      CHORE = { icon = " ", colour = "default" },
+      IDEA  = { icon = "💡", colour = "hint" },
+    },
+  },
+  keys = {
+    { "]t", function() require("todo-comments").jump_next() end, desc = "Next TODO/FIX/WARN" },
+    { "[t", function() require("todo-comments").jump_prev() end, desc = "Prev TODO/FIX/WARN" },
+    { "<leader>td", "<cmd>TodoTelescope<cr>", desc = "Todos (Telescope)" },
+    { "<leader>tq", "<cmd>TodoQuickFix<cr>",  desc = "Todos → Quickfix" },
+    { "<leader>tl", "<cmd>TodoLocList<cr>",   desc = "Todos → Loclist" },
+    { "<leader>tt", "<cmd>TodoTrouble<cr>",   desc = "Todos (Trouble)" }, -- if you use Trouble
+  },
+},
   -- Markdown preview plugin
 {
   "iamcco/markdown-preview.nvim",
@@ -797,5 +833,6 @@ map({ "n", "v" }, "<C-S-Up>", function()
   if vim.fn.mode() == "n" then vim.cmd("normal! V") end
   vim.cmd("normal! k")
 end, { noremap = true, silent = true })
+
 
 
