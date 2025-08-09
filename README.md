@@ -53,7 +53,7 @@ The configuration is organised into logical directories for different concerns: 
 │  │  │  ├─ treesitter.lua
 │  │  │  └─ nvim_tree.lua
 │  └─ custom/
-│     ├─ ai_ui.lua           ← Requires AI endpoints at http://localhost:5001
+│     ├─ ai_ui.lua           ← Requires AI endpoints at http://localhost:5001 (See xai repo)
 │     ├─ lint.lua
 │     ├─ spell.lua
 │     ├─ telescope_extras.lua
