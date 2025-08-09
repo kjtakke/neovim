@@ -20,6 +20,7 @@
 | AI UI Module Workflow | [#ai-ui-module-workflow](#ai-ui-module-workflow) |
 | Installation Steps | [#installation-steps](#installation-steps) |
 | Customisation Guidelines | [#customisation-guidelines](#customisation-guidelines) |
+| Key Bindings | [#key-bindings](#key-bindings) |
 
 ## Overview
 
@@ -500,3 +501,162 @@ The AI UI module (`ai_ui.lua`) is a local Neovim interface for interacting with 
 - New custom tools or utilities should be placed under `lua/custom/` with their logic fully encapsulated.
     
 - Keymaps should reference modules using `require("custom.module_name")` to maintain a clear namespace.
+
+# Key Bindings
+
+| Category | Key/Command | Description |
+|---|---|---|
+| Navigation | `h` | Move left |
+| Navigation | `l` | Move right |
+| Navigation | `j` | Move down |
+| Navigation | `k` | Move up |
+| Navigation | `gg` | Go to beginning of file |
+| Navigation | `G` | Go to end of file |
+| Navigation | `0` | Move to beginning of line |
+| Navigation | `^` | Move to first non-blank character |
+| Navigation | `$` | Move to end of line |
+| Navigation | `w` | Move to beginning of next word |
+| Navigation | `b` | Move to beginning of previous word |
+| Navigation | `}` | Move to next paragraph |
+| Navigation | `{` | Move to previous paragraph |
+| Navigation | `%` | Jump between matching brackets |
+| Navigation | `ve` | Select word |
+| Editing | `i` | Insert before cursor |
+| Editing | `I` | Insert at beginning of line |
+| Editing | `a` | Append after cursor |
+| Editing | `A` | Append at end of line |
+| Editing | `o` | Open new line below |
+| Editing | `O` | Open new line above |
+| Editing | `r<char>` | Replace single character |
+| Editing | `R` | Enter replace mode |
+| Editing | `s` | Delete character and insert |
+| Editing | `cc` | Change whole line |
+| Editing | `cw` | Change word |
+| Editing | `C` | Change to end of line |
+| Editing | `J` | Join lines |
+| Editing | `\z` | Add Word to Dictionary |
+| Editing | `\sc` | Spell Sheck |
+| Folding | `za` | Toggle fold at cursor |
+| Folding | `zc` | Close fold at cursor |
+| Folding | `zo` | Open fold at cursor |
+| Folding | `zm` | Close more folds (increase level) |
+| Folding | `zr` | Open more folds (reduce level) |
+| Folding | `zM` | Close all folds in module |
+| Folding | `zR` | Open all folds in module |
+| Visual/Multi | `Shift + V` | Select multiple lines |
+| Visual/Multi | `v` | Start visual mode |
+| Visual/Multi | `viw` | Select inner word |
+| Visual/Multi | `vaw` | Select word (with surrounding space) |
+| Multiple Cursor | `Ctrl + U Arrow` | Multi Cursor: select next line up |
+| Multiple Cursor | `Ctrl + D Arrow` | Multi Cursor: select next line down |
+| Multiple Cursor | `Ctrl + N` | Multi Cursor: select next occurrence |
+| Select/Search | `*` | Find highlighted word |
+| Select/Search | `n` | Next occurrence |
+| Select/Search | `N` | Previous occurrence |
+| Multiple Cursor | `CtrL-V the Shtit + i` | Select Multi Line |
+| Undo/Redo | `u` | Undo last change |
+| Undo/Redo | `Ctrl-r` | Redo last undone change |
+| Undo/Redo | `U` | Undo all changes on current line |
+| File & Buffer | `:e <file>` | Open/edit file |
+| File & Buffer | `:e!` | Revert/discard changes & reopen file |
+| File & Buffer | `:w` | Save file |
+| File & Buffer | `:w <file>` | Save as another file |
+| File & Buffer | `:q` | Quit |
+| File & Buffer | `:q!` | Quit without saving |
+| File & Buffer | `:qall!` | Quit (kill all processes) |
+| File & Buffer | `:wq / ZZ` | Save and quit |
+| File & Buffer | `:x` | Write file if changed, then quit |
+| File & Buffer | `:bn` | Next buffer |
+| File & Buffer | `:bp` | Previous buffer |
+| File & Buffer | `:bd` | Delete buffer |
+| File & Buffer | `:ls / :buffers` | List open buffers |
+| File & Buffer | `\x` | New scratch file |
+| File & Buffer | `ZQ` | Quit without saving (normal mode) |
+| File & Buffer | `:Wt` | Write and Test Python Files using pylint |
+| File & Buffer | `:Wts` | Write and Test Shell Scripts using SehllCheck |
+| File & Buffer | `CtrL+a` | Select All |
+| AI Assistant | `/ai` | AI Assistant GUI |
+| AI Assistant | `/s` | Submit Request |
+| AI Assistant | `/f` | Append upto 1000 lines |
+| AI Assistant | `/z` | Resize pane for easy copying |
+| AI Assistant | `/a` | Reset/Clear Chat |
+| AI Assistant | `:Models` | Get Chat Models |
+| AI Assistant | `:ChangeModel <modelName>` | Change Chat Models |
+| Search | `/pattern` | Search forward |
+| Search | `?pattern` | Search backward |
+| Search | `n` | Repeat last search (same direction) |
+| Search | `N` | Repeat last search (opposite direction) |
+| Search | `*` | Search forward for word under cursor |
+| Search | `#` | Search backward for word under cursor |
+| Search | `:noh` | Clear search highlights |
+| Delete/Yank/Put | `x` | Delete character under cursor |
+| Delete/Yank/Put | `dd` | Delete current line |
+| Delete/Yank/Put | `dw` | Delete word |
+| Delete/Yank/Put | `d$` | Delete to end of line |
+| Delete/Yank/Put | `yy` | Yank (copy) current line |
+| Delete/Yank/Put | `yw` | Yank word |
+| Delete/Yank/Put | `p` | Paste after cursor |
+| Delete/Yank/Put | `P` | Paste before cursor |
+| Visual Mode | `v` | Start visual mode |
+| Visual Mode | `V` | Start visual line mode |
+| Visual Mode | `Ctrl-v` | Start visual block mode |
+| Visual Mode | `y` | Yank selection |
+| Visual Mode | `d` | Delete selection |
+| Visual Mode | `> / <` | Indent / un-indent selection |
+| Command-Line | `:help <topic>` | Open help documentation |
+| Command-Line | `:set <option>` | Set an option (e.g. :set number) |
+| Command-Line | `:!<command>` | Run shell command |
+| Command-Line | `:syntax on` | Enable syntax highlighting |
+| Tabs | `:tabnew` | Open a new tab |
+| Tabs | `:tabnew <file>` | Open a file in a new tab |
+| Tabs | `:tabclose` | Close the current tab |
+| Tabs | `:tabonly` | Close all other tabs |
+| Tabs | `:tabs` | List all tabs and their contents |
+| Tabs | `gt / :tabn` | Go to next tab |
+| Tabs | `gT / :tabp` | Go to previous tab |
+| Tabs | `:tabfirst` | Go to the first tab |
+| Tabs | `:tablast` | Go to the last tab |
+| Tabs | `:tabnext <N>` | Go to tab number N |
+| Tabs | `:tabmove <N>` | Move current tab to position N |
+| Splits & Windows | `:split / :sp` | Horizontal split (same file) |
+| Splits & Windows | `:vsplit / :vsp` | Vertical split (same file) |
+| Splits & Windows | `:split <file>` | Horizontal split + open file |
+| Splits & Windows | `:vsplit <file>` | Vertical split + open file |
+| Splits & Windows | `/n` | vsplit new scratch file to the right |
+| Splits & Windows | `Ctrl-w h` | Move to split left |
+| Splits & Windows | `Ctrl-w l` | Move to split right |
+| Splits & Windows | `Ctrl-w j` | Move to split below |
+| Splits & Windows | `Ctrl-w k` | Move to split above |
+| Splits & Windows | `Ctrl-w w` | Cycle to the next window |
+| Splits & Windows | `Ctrl-w q` | Quit a split |
+| Splits & Windows | `Ctrl-w >` | Increase width (vertical split) |
+| Splits & Windows | `Ctrl-w <` | Decrease width |
+| Splits & Windows | `Ctrl-w +` | Increase height (horizontal split) |
+| Splits & Windows | `Ctrl-w -` | Decrease height |
+| Splits & Windows | `Ctrl-w =` | Equalise all splits |
+| Terminal | `:terminal` | Open terminal in current window |
+| Terminal | `:split | terminal` | Horizontal split with terminal |
+| Terminal | `:vsplit | terminal` | Vertical split with terminal |
+| Terminal | `Ctrl-\ Ctrl-n` | Exit terminal insert mode |
+| Plugin | `fg` | Live Grep (plugin command) |
+| Plugin | `ff` | File Grep (plugin command) |
+| Plugin | `gc` | Toggle comment on highlighted lines |
+| Copilot | `:Copilot` | Open Copilot panel |
+| Copilot | `:Copilot enable` | Enable Copilot |
+| Copilot | `:Copilot disable` | Disable Copilot |
+| Copilot | `:Copilot status` | Show Copilot status |
+| Copilot | `CtrL + B` | Accept Copilot suggestion |
+| GO func var Finder | `\gf` | RipGrep on selected var or func on GO |
+| GO func var Finder | `\gd` | RipGrep on selected func |
+| Preview Files | `/mp` | Preview Markdown in Browser |
+| Navigate Todos | `]t` | Jump to next TODO/FIX/WARN |
+| Navigate Todos | `[t` | Jump to previous TODO/FIX/WARN |
+| Todo Finder | `\td` | List TODOs in Telescope |
+| Todo Finder | `\tq` | Send TODOs to Quickfix list |
+| Todo Finder | `\tl` | Send TODOs to Location list |
+| Todo Finder | `\tt` | Show TODOs in Trouble (if installed) |
+| Document Conversions | `:Ww` | Export current Markdown to DOCX |
+| Document Conversions | `:Wm` | Convert current DOCX to Markdown |
+| Document Conversions | `:Wp` | Export current Markdown/DOCX to PDF |
+| Document Conversions | `WordBridgeWrite` | Force-write bridged DOCX from Markdown |
+| Code Statistics | `\sc` | Languages used |
