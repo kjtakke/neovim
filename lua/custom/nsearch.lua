@@ -3,7 +3,7 @@ vim.api.nvim_create_user_command("NSearch", function(opts)
   local search = table.concat(opts.fargs, " ")
   if search == "" then print("Usage: :NSearch <search_term>"); return end
 
-  local file = vim.fn.stdpath("config") .. "/nsearch.txt"
+  local file = vim.fn.stdpath("config") .. "/search/nsearch.txt"
   local f = io.open(file, "r")
   if not f then print("Error: " .. file .. " not found!"); return end
 
@@ -37,5 +37,5 @@ vim.api.nvim_create_user_command("NSearch", function(opts)
     end
     print(table.concat(formatted, " | "))
   end
-end, { nargs = "+", desc = "Search ~/.config/nvim/nsearch.txt (case-insensitive)" })
+end, { nargs = "+", desc = "Search ~/.config/nvim/search/nsearch.txt (case-insensitive)" })
 

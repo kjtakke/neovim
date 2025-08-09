@@ -1,58 +1,92 @@
-# Update package lists
-sudo apt update
+#!/bin/bash
+set -euo pipefail
 
-#Install Live Grep
-sudo apt install ripgrep pylint shellcheck
+# ---------------------------
+# (Mint-only) enable snapd
+# ---------------------------
+# Remove block on snapd if present
+sudo rm -f /etc/apt/preferences.d/nosnap.pref || true
 
-# Install NeoVim
-curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
-sudo rm -rf /opt/nvim
-echo 'Installing nvim'
-sudo tar -C /opt -xzf ./nvim-linux-x86_64.tar.gz
-echo 'Cleaning up'
-rm nvim-linux-x86_64.tar.gz
-echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.bashrc
-echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.zshrc
-# Install pipx for Python package management
-sudo apt install pipx -y
+sudo apt update -y
+sudo apt install -y snapd
 
-# Install xclip for clipboard support
-sudo apt-get install xclip -y
+# start & enable the daemon
+sudo systemctl enable --now snapd.socket
+sudo systemctl start snapd.apparmor 2>/dev/null || true
 
-# Ensure pipx is in your PATH
+# ensure /snap exists
+sudo ln -sf /var/lib/snapd/snap /snap
+
+# sanity check
+snap version || true
+
+# tectonic via snap (LaTeX-free PDF engine for pandoc)
+sudo snap install tectonic --classic
+tectonic -V || true
+
+# ---------------------------
+# Base tools
+# ---------------------------
+sudo apt update -y
+
+# Live grep & linters
+sudo apt install -y ripgrep pylint shellcheck
+
+# Clipboard support
+sudo apt install -y xclip
+
+# pipx for Python tooling and pynvim
+sudo apt install -y pipx
 pipx ensurepath
+pipx install --include-deps pynvim || true
 
-# Install pynvim for Python support in NeoVim
-pipx install pynvim
+# ---------------------------
+# Neovim (prebuilt tarball)
+# ---------------------------
+curl -L -o /tmp/nvim-linux-x86_64.tar.gz \
+  https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
 
-# Create directories for NeoVim configuration
+sudo rm -rf /opt/nvim /opt/nvim-linux-x86_64 2>/dev/null || true
+echo 'Installing nvim'
+sudo tar -C /opt -xzf /tmp/nvim-linux-x86_64.tar.gz
+echo 'Cleaning up'
+rm -f /tmp/nvim-linux-x86_64.tar.gz
+
+# Add aliases (idempotent)
+grep -q "/opt/nvim-linux-x86_64/bin/nvim" ~/.bashrc || \
+  echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.bashrc
+grep -q "/opt/nvim-linux-x86_64/bin/nvim" ~/.zshrc  || \
+  echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.zshrc
+
+# ---------------------------
+# Node tooling for LSPs
+# ---------------------------
+sudo apt install -y npm
+sudo npm install -g pyright bash-language-server tree-sitter-cli
+
+# ---------------------------
+# Neovim config
+# ---------------------------
 mkdir -p ~/.config/nvim/lua/plugins
 
-# Clone and install lazy.nvim plugin manager
-git clone https://github.com/folke/lazy.nvim ~/.local/share/nvim/lazy/lazy.nvim
+# lazy.nvim
+if [ ! -d ~/.local/share/nvim/lazy/lazy.nvim ]; then
+  git clone https://github.com/folke/lazy.nvim ~/.local/share/nvim/lazy/lazy.nvim
+fi
 
-# Install Node.js package manager
-sudo apt install npm -y
+# your config
+if [ -d ~/.config/nvim/.git ]; then
+  git -C ~/.config/nvim pull --ff-only || true
+else
+  git clone https://github.com/kjtakke/neovim ~/.config/nvim
+fi
 
-# Install TypeScript and Bash language servers
-sudo npm install -g pyright
-sudo npm install -g bash-language-server
-sudo npm install -g tree-sitter-cli
+# Refresh shell aliases in current session (ignore if shells not present)
+[ -f ~/.zshrc ] && . ~/.zshrc || true
+[ -f ~/.bashrc ] && . ~/.bashrc || true
 
-# Clone configuration repository and set up NeoVim
-git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
-cp -f ~/nvim-clone/init.lua ~/.config/nvim/init.lua
-cp -f ~/nvim-clone/search/nsearch.txt ~/.config/nvim/nsearch.txt
-cp -f ~/nvim-clone/lazy-lock.json ~/.config/nvim/lazy-lock.json
-cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
-cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
-cp -f ~/nvim-clone/lua/lsp.lua ~/.config/nvim/lua/lsp.lua
-cp -f ~/nvim-clone/lua/plugins/init.lua ~/.config/nvim/lua/plugins/init.lua
+# ---------------------------
+# Done – launch Neovim
+# ---------------------------
+exec /opt/nvim-linux-x86_64/bin/nvim
 
-# Remove temporary clone directory
-rm -rf ~/nvim-clone
-
-source ~/.zshrc
-source ~/.bashrc
-# Launch NeoVim
-nvim
