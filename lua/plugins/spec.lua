@@ -94,5 +94,22 @@ return {
   { "lewis6991/gitsigns.nvim",  config = true },
   { "windwp/nvim-autopairs",    config = true },
   { "numToStr/Comment.nvim",    config = true },
+
+-- lua/plugins/spec.lua
+{
+  "nvim-lua/plenary.nvim",
+  lazy = false,
+  config = function()
+    local ok, mod = pcall(require, "plugins.cfg.file_stats")
+    if ok and type(mod.setup) == "function" then
+      mod.setup()
+    else
+      vim.notify("plugins.cfg.file_stats not found or has no setup()", vim.log.levels.WARN)
+    end
+  end,
+},
+
+
+
 }
 

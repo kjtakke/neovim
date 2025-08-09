@@ -89,6 +89,7 @@ U | Undo all changes on current line | Undo/Redo
 ZQ | Quit without saving (normal mode) | File & Buffeir
 :Wt | Write and Test Python Files using pylint | File & Buffeir
 :Wts | Write and Test Shell Scripts using SehllCheck | File & Buffeir
+CtrL+a | Select All | File & Buffeir
 
 # ======================
 # AI Assistant
@@ -230,4 +231,9 @@ CtrL + B | Accept Copilot suggestion | Copilot
 :Wm | Convert current DOCX to Markdown       | Document Conversions
 :Wp | Export current Markdown/DOCX to PDF    | Document Conversions
 WordBridgeWrite | Force-write bridged DOCX from Markdown | Document Conversions
+
+# ======================
+# Code Statistics
+# ======================
+\sc | Languages used    | Code Statistics
 

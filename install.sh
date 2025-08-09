@@ -52,6 +52,9 @@ sudo tar -C /opt -xzf /tmp/nvim-linux-x86_64.tar.gz
 echo 'Cleaning up'
 rm -f /tmp/nvim-linux-x86_64.tar.gz
 
+# Install cloc
+sudo apt install cloc -y
+
 # Add aliases (idempotent)
 grep -q "/opt/nvim-linux-x86_64/bin/nvim" ~/.bashrc || \
   echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.bashrc

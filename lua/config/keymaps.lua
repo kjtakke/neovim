@@ -47,3 +47,9 @@ vim.api.nvim_create_user_command("ChangeModel", function(opts) require("ai_ui").
 -- Add word to dictionary
 map("n", "<leader>z", "zg", { desc = "Add word to dictionary" })
 
+-- Select All --
+vim.keymap.set('n', '<C-a>', 'ggVG', { noremap = true, silent = true })
+
+-- Code statistics
+map("n", "\\cs", "<cmd>CodeStats<cr>", { silent = true, desc = "Show Code Statistics" })
+
