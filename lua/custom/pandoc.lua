@@ -18,17 +18,31 @@ local function sys_sync(cmd_tbl)
 end
 
 -- Prefer a lightweight PDF engine if available -------------------------------
+-- local function pdf_engine_args()
+--   if vim.fn.executable("tectonic") == 1 then
+--     return { "--pdf-engine", "tectonic" }
+--   elseif vim.fn.executable("xelatex") == 1 then
+--     return { "--pdf-engine", "xelatex" }
+--   elseif vim.fn.executable("wkhtmltopdf") == 1 then
+--     return { "--pdf-engine", "wkhtmltopdf" }
+--   else
+--     return {} -- Let Pandoc use its default; may require a LaTeX install.
+--   end
+-- end
+
 local function pdf_engine_args()
-  if vim.fn.executable("tectonic") == 1 then
-    return { "--pdf-engine", "tectonic" }
+  if vim.fn.executable("wkhtmltopdf") == 1 then
+    return { "--pdf-engine", "wkhtmltopdf" }
   elseif vim.fn.executable("xelatex") == 1 then
     return { "--pdf-engine", "xelatex" }
-  elseif vim.fn.executable("wkhtmltopdf") == 1 then
-    return { "--pdf-engine", "wkhtmltopdf" }
+  elseif vim.fn.executable("tectonic") == 1 then
+    return { "--pdf-engine", "tectonic" }
   else
-    return {} -- Let Pandoc use its default; may require a LaTeX install.
+    return {}
   end
 end
+
+
 
 -- :Ww — Markdown -> DOCX (only on .md files) --------------------------------
 vim.api.nvim_create_user_command("Ww", function()

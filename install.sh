@@ -74,6 +74,11 @@ if [ ! -d ~/.local/share/nvim/lazy/lazy.nvim ]; then
   git clone https://github.com/folke/lazy.nvim ~/.local/share/nvim/lazy/lazy.nvim
 fi
 
+# Pandoc
+# sudo apt update
+sudo apt install -y pandoc
+sudo apt install -y wkhtmltopdf
+
 # your config
 if [ -d ~/.config/nvim/.git ]; then
   git -C ~/.config/nvim pull --ff-only || true

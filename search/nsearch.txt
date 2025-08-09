@@ -222,3 +222,12 @@ CtrL + B | Accept Copilot suggestion | Copilot
 \tq | Send TODOs to Quickfix list           | Todo Finder
 \tl | Send TODOs to Location list           | Todo Finder
 \tt | Show TODOs in Trouble (if installed)  | Todo Finder
+
+# ======================
+# Document Conversions
+# ======================
+:Ww | Export current Markdown to DOCX        | Document Conversions
+:Wm | Convert current DOCX to Markdown       | Document Conversions
+:Wp | Export current Markdown/DOCX to PDF    | Document Conversions
+WordBridgeWrite | Force-write bridged DOCX from Markdown | Document Conversions
+
