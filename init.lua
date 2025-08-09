@@ -24,4 +24,5 @@ require("custom.cursor")
 require("custom.multicursor")
 require("custom.pandoc")
 require("custom.docx_md")
+require("custom.ai_ui")
 

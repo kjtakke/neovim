@@ -53,3 +53,18 @@ vim.keymap.set('n', '<C-a>', 'ggVG', { noremap = true, silent = true })
 -- Code statistics
 map("n", "\\cs", "<cmd>CodeStats<cr>", { silent = true, desc = "Show Code Statistics" })
 
+-- AI UI opener (calls your module)
+vim.keymap.set('n', '<leader>ai',
+  [[<cmd>lua require('custom.ai_ui').set_last_buf()<CR><cmd>lua require('custom.ai_ui').open_ui()<CR>]],
+  { noremap = true, silent = true, desc = "AI UI: open panel" }
+)
+
+-- Optional helper commands (if you want them)
+vim.api.nvim_create_user_command("Models", function()
+  require("custom.ai_ui").show_models()
+end, {})
+
+vim.api.nvim_create_user_command("ChangeModel", function(opts)
+  require("custom.ai_ui").change_model(opts.args)
+end, { nargs = 1 })
+
