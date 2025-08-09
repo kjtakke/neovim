@@ -1,395 +1,241 @@
-# NeoVim Installation and Usage Guide
-> Run all in bash not zsh
-`git clone https://github.com/kjtakke/neovim.git && bash neovim/install.sh && rm -rf neovim`
-> - Close Terminal Session
-> - Reopen Termina
-> - `nvim`
-> - `:Lazy` (If not automated)
-> - `Shtif + U` to update plugins
+# Neovim Configuration – Detailed Project Documentation
 
-This comprehensive guide provides detailed instructions for installing NeoVim, configuring it with plugins, and an extensive list of commands for proficient usage. Adhering to software engineering principles, this document aims to be clear, concise, and structured for ease of understanding and implementation.
+## Overview
 
-## NeoVim Installation Instructions
+This project is a structured Neovim configuration designed for maintainability, modularity, and ease of extension. It leverages Lua for configuration, uses the Lazy.nvim plugin manager for package handling, and incorporates additional custom utilities, including an AI-assisted interface (`ai_ui`) that integrates with an external HTTP API.
 
-### Prerequisites
+The configuration is organised into logical directories for different concerns: core settings, plugin specifications, plugin configurations, and custom utility scripts. Each Lua file is responsible for a distinct part of the editor’s behaviour.
 
-Ensure you have the following prerequisites met before proceeding with the installation:
+## Files
+```txt
+~/.config/nvim/
+├─ init.lua
+├─ lua/
+│  ├─ utils.lua
+│  ├─ config/
+│  │  ├─ options.lua
+│  │  ├─ appearance.lua
+│  │  ├─ autocmds.lua
+│  │  ├─ keymaps.lua
+│  ├─ plugins/
+│  │  ├─ init.lua
+│  │  ├─ spec.lua
+│  │  ├─ cfg/
+│  │  │  ├─ catppuccin.lua
+│  │  │  ├─ cmp.lua
+│  │  │  ├─ lualine.lua
+│  │  │  ├─ markdown_preview.lua
+│  │  │  ├─ mason.lua
+│  │  │  ├─ mason_lspconfig.lua
+│  │  │  ├─ telescope.lua
+│  │  │  ├─ todo_comments.lua
+│  │  │  ├─ treesitter.lua
+│  │  │  └─ nvim_tree.lua
+│  └─ custom/
+│     ├─ ai_ui.lua           ← Requires AI endpoints at http://localhost:5001
+│     ├─ lint.lua
+│     ├─ spell.lua
+│     ├─ telescope_extras.lua
+│     ├─ nsearch.lua
+│     ├─ cursor.lua
+│     └─ multicursor.lua
+└─ spell/
+   └─ en.utf-8.add           (auto-created if missing)
 
-- A Unix-like operating system (e.g., Linux, macOS)
-- `sudo` privileges for installation
-
-### Installation Steps
-
-To install NeoVim and set up the necessary plugins and configurations, execute the following script in your terminal:
-
-```bash
-# Update package lists
-sudo apt update
-
-#Install Live Grep
-sudo apt install ripgrep pylint shellcheck
-
-# Install NeoVim
-curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
-sudo rm -rf /opt/nvim
-echo 'Installing nvim'
-sudo tar -C /opt -xzf ./nvim-linux-x86_64.tar.gz
-echo 'Cleaning up'
-rm nvim-linux-x86_64.tar.gz
-echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.bashrc
-echo "alias nvim='/opt/nvim-linux-x86_64/bin/nvim'" >> ~/.zshrc
-# Install pipx for Python package management
-sudo apt install pipx -y
-
-# Install xclip for clipboard support
-sudo apt-get install xclip -y
-
-# Ensure pipx is in your PATH
-pipx ensurepath
-
-# Install pynvim for Python support in NeoVim
-pipx install pynvim
-
-# Create directories for NeoVim configuration
-mkdir -p ~/.config/nvim/lua/plugins
-
-# Clone and install lazy.nvim plugin manager
-git clone https://github.com/folke/lazy.nvim ~/.local/share/nvim/lazy/lazy.nvim
-
-# Install Node.js package manager
-# sudo apt install npm -y
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
-
-# Install TypeScript and Bash language servers
-sudo npm install -g pyright
-sudo npm install -g bash-language-server
-sudo npm install -g tree-sitter-cli
-
-
-# Clone configuration repository and set up NeoVim
-git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
-cp -f ~/nvim-clone/init.lua ~/.config/nvim/init.lua
-cp -f ~/nvim-clone/search/nsearch.txt ~/.config/nvim/nsearch.txt
-cp -f ~/nvim-clone/lazy-lock.json ~/.config/nvim/lazy-lock.json
-cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
-cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
-cp -f ~/nvim-clone/lua/lsp.lua ~/.config/nvim/lua/lsp.lua
-cp -f ~/nvim-clone/lua/plugins/init.lua ~/.config/nvim/lua/plugins/init.lua
-
-git clone https://github.com/github/copilot.vim.git ~/.config/nvim/pack/github/start/copilot.vim
-
-# Remove temporary clone directory
-rm -rf ~/nvim-clone
-
-source ~/.zshrc
-source ~/.bashrc
-# Launch NeoVim
-nvim
 ```
+* * *
 
-### Installing Plugins
+## Directory Structure
 
-Once NeoVim is launched, you can install plugins using the `Lazy` plugin manager:
+### Root Directory: `~/.config/nvim`
 
-- Open NeoVim (`nvim` in your terminal).
-- Enter the command mode by pressing `:`.
-- Type `Lazy` and press Enter to open the plugin manager.
-- Use `Shift + I` to install all plugins.
-- Use `Shift + U` to update all plugins.
+- **init.lua**  
+    The main entry point for Neovim’s configuration. This file requires other configuration modules, sets up the runtime path, and initialises all settings, plugins, and custom logic.
 
-## Update Script
+* * *
 
-To update your NeoVim configuration, execute the following script in your terminal:
+### `lua/` – Core Lua Configuration Files
 
-```bash
-# Clone the latest configuration
-git clone https://github.com/kjtakke/neovim.git ~/nvim-clone
+Contains reusable Lua modules and subdirectories that handle various aspects of Neovim’s behaviour.
 
-# Update configuration files
-cp -f ~/nvim-clone/init.lua ~/.config/nvim/init.lua
-cp -f ~/nvim-clone/search/nsearch.txt ~/.config/nvim/nsearch.txt
-cp -f ~/nvim-clone/lazy-lock.json ~/.config/nvim/lazy-lock.json
-cp -f ~/nvim-clone/lua/cmp.lua.bak ~/.config/nvim/lua/cmp.lua.bak
-cp -f ~/nvim-clone/lua/init.lua ~/.config/nvim/lua/init.lua
-cp -f ~/nvim-clone/lua/lsp.lua ~/.config/nvim/lua/lsp.lua
-cp -f ~/nvim-clone/lua/plugins/init.lua ~/.config/nvim/lua/plugins/init.lua
+#### `utils.lua`
 
-# Remove temporary clone directory
-rm -rf ~/nvim-clone
+Utility functions used throughout the configuration. Common helper functions are stored here to avoid repetition and centralise logic.
 
-# Launch NeoVim to apply changes
-nvim
-```
+* * *
 
-## 🧠 Neovim Essentials Cheat Sheet – For Senior Developers (Beginner to NVim)
+### `lua/config/` – Core Neovim Behaviour Configuration
 
-| **Category** | **Command / Shortcut** | **Description** |
-| --- | --- | --- |
-| 🔀 **Navigation** | `h` `j` `k` `l` | Move left / down / up / right |
-| \-  | `gg` / `G` | Go to start / end of file |
-| \-  | `w` / `b` | Move to next / previous word |
-| \-  | `^` / `$` | Start / end of line |
-| \-  | `%` | Jump to matching bracket/brace/parenthesis |
-| ✍️ **Editing** | `i` / `I` | Insert before cursor / at start of line |
-| \-  | `a` / `A` | Append after cursor / at end of line |
-| \-  | `o` / `O` | Open new line below / above |
-| \-  | `r<char>` / `R` | Replace single char / enter replace mode |
-| \-  | `cw` / `cc` / `C` | Change word / line / to end of line |
-| ✂️ **Cut / Copy / Paste** | `x` / `dd` / `d$` | Delete char / line / to end of line |
-| \-  | `yy` / `yw` | Yank line / word |
-| \-  | `p` / `P` | Paste after / before cursor |
-| 🔄 **Undo / Redo** | `u` / `Ctrl + r` | Undo / Redo |
-| \-  | `U` | Undo changes on current line |
-| 🔎 **Search** | `/pattern` / `?pattern` | Search forward / backward |
-| \-  | `n` / `N` | Repeat last search forward / backward |
-| \-  | `*` / `#` | Search word under cursor forward / backward |
-| \-  | `:noh` | Clear search highlights |
-| 🧱 **Visual Mode** | `v` / `V` / `Ctrl + v` | Start char / line / block selection |
-| \-  | `y` / `d` / `>` / `<` | Yank / delete / indent / un-indent selection |
-| 💾 **Files & Buffers** | `:e <file>` / `:w` / `:q` | Edit / write / quit |
-| \-  | `:wq` / `ZZ` | Write and quit |
-| \-  | `:bd` / `:ls` / `:bn` / `:bp` | Delete / list / next / previous buffer |
-| 🪟 **Splits** | `:sp` / `:vsp` | Horizontal / vertical split |
-| \-  | `Ctrl-w h/j/k/l` | Move across splits |
-| \-  | `Ctrl-w q` / `=` | Quit split / equalise sizes |
-| 🗂️ **Tabs** | `:tabnew` / `:tabclose` | Open / close tab |
-| \-  | `gt` / `gT` | Next / previous tab |
-| 🖥️ **Terminal** | `:terminal` | Open terminal in current window |
-| \-  | `Ctrl-\ Ctrl-n` | Exit terminal insert mode |
-| 🧠 **Help / Docs** | `:help <topic>` | Access help system |
-| \-  | `:syntax on` | Enable syntax highlighting |
-| 💡 **Plugins (Typical)** | `fg` / `ff` / `gc` | Live grep / file find / comment toggle (e.g., Telescope) |
-| 🚀 **Quick Tips** | `.` | Repeat last change |
-| \-  | `:! <cmd>` | Run shell command |
-| \-  | `:set number` | Show line numbers |
-| 🧠 **AI Assistant** | `/ai` / `/s` | Open GUI / Submit AI request (if configured) |
+- **options.lua**  
+    Sets general Neovim options, such as line numbering, indentation rules, mouse support, and clipboard behaviour.
+    
+- **appearance.lua**  
+    Configures the visual presentation of Neovim, including colour schemes, status lines, and theme integration.
+    
+- **autocmds.lua**  
+    Defines auto commands to automate tasks such as reloading files, highlighting yanks, and applying file-type specific behaviour.
+    
+- **keymaps.lua**  
+    Contains all keybinding definitions, including the AI UI keymap that integrates the custom AI interface module. This ensures user-defined mappings are grouped in a single place for maintainability.
+    
 
-## NeoVim Command Reference
+* * *
 
-Below is a comprehensive list of NeoVim commands categorised by functionality. These commands adhere to the principle of least astonishment, ensuring intuitive and consistent user interactions.
+### `lua/plugins/` – Plugin Management and Configuration
 
-### 🧭 **Navigation**
+- **init.lua**  
+    Loads and initialises the Lazy.nvim plugin manager, specifying which plugin specification files should be used.
+    
+- **spec.lua**  
+    Lists all plugins to be installed, including their configuration loading paths and any conditional loading rules.
+    
+- **cfg/** – Plugin-specific configuration files. Each file is dedicated to configuring a single plugin:
+    
+    - `catppuccin.lua` – Catppuccin theme configuration.
+        
+    - `cmp.lua` – Completion framework setup.
+        
+    - `lualine.lua` – Statusline configuration.
+        
+    - `markdown_preview.lua` – Markdown preview integration.
+        
+    - `mason.lua` – Package manager for LSP servers, linters, and formatters.
+        
+    - `mason_lspconfig.lua` – Mason LSP configuration integration.
+        
+    - `telescope.lua` – Telescope fuzzy finder setup.
+        
+    - `todo_comments.lua` – Highlight and manage TODO, FIXME, and other comment tags.
+        
+    - `treesitter.lua` – Syntax highlighting and parsing via Tree-sitter.
+        
+    - `nvim_tree.lua` – File explorer integration.
+        
 
-| Command | Description |
-| --- | --- |
-| `h` | Move left |
-| `j` | Move down |
-| `k` | Move up |
-| `l` | Move right |
-| `gg` | Go to beginning of file |
-| `G` | Go to end of file |
-| `0` | Move to beginning of line |
-| `^` | Move to first non-blank character |
-| `$` | Move to end of line |
-| `w` | Move to beginning of next word |
-| `b` | Move to beginning of previous word |
-| `}` | Move to next paragraph |
-| `{` | Move to previous paragraph |
-| `%` | Jump between matching brackets |
+* * *
 
-### ✍️ **Editing**
+### `lua/custom/` – Custom Utilities and Extensions
 
-| Command | Description |
-| --- | --- |
-| `i` | Insert before cursor |
-| `I` | Insert at beginning of line |
-| `a` | Append after cursor |
-| `A` | Append at end of line |
-| `o` | Open new line below |
-| `O` | Open new line above |
-| `r<char>` | Replace single character |
-| `R` | Enter replace mode |
-| `s` | Delete character and insert |
-| `cc` | Change whole line |
-| `cw` | Change word |
-| `C` | Change to end of line |
-| `J` | Join lines |
+- **ai_ui.lua**  
+    The AI-assisted interface module.  
+    This script creates a dual-pane popup interface in Neovim to interact with an AI API running locally on `http://localhost:5001`.  
+    Features include:
+    
+    - Opening a question buffer and an answer buffer in floating windows.
+        
+    - Sending a question to the AI API and receiving responses.
+        
+    - Clearing conversation history.
+        
+    - Toggling the visibility of the question buffer.
+        
+    - Loading AI conversation history from the API.
+        
+    - Inserting content from the previously active buffer into the question buffer.
+        
+    - Listing available AI models and changing the active model.
+        
+    
+    **Integration with Keymaps**  
+    The keybinding to open the AI UI is defined in `lua/config/keymaps.lua` and calls `require("custom.ai_ui").set_last_buf()` followed by `require("custom.ai_ui").open_ui()`.
+    
+- **lint.lua**  
+    Custom linting logic and configuration.
+    
+- **spell.lua**  
+    Spell-checking customisations and additional dictionary settings.
+    
+- **telescope_extras.lua**  
+    Extended Telescope commands and search functionality.
+    
+- **nsearch.lua**  
+    Alternative search implementations and enhancements.
+    
+- **cursor.lua**  
+    Custom cursor movement and highlighting logic.
+    
+- **multicursor.lua**  
+    Multiple cursor simulation and manipulation functionality.
+    
 
-### ✍️ **Select**
+* * *
 
-| Command | Description |
-| --- | --- |
-| `v` | Start visual mode |
-| `V` | Start visual line mode |
-| `Ctrl-v` | Start visual block mode |
-| `viw` | Select inner word |
-| `vaw` | Select word with whitespace |
-| `Ctrl + Up/Down Arrow` | Multi-cursor select next line |
-| `Ctrl + N` | Multi-cursor select next occurrence |
-| `*` | Find highlighted word |
-| `n` | Next occurrence |
-| `N` | Previous occurrence |
+### `spell/` – Spellchecking Data
 
-### 🔁 **Undo/Redo**
+- **en.utf-8.add**  
+    User-added dictionary words for spellchecking. Automatically created if it does not exist.
 
-| Command | Description |
-| --- | --- |
-| `u` | Undo last change |
-| `Ctrl-r` | Redo last undone change |
-| `U` | Undo all changes on current line |
+* * *
 
-### 🗂️ **File & Buffer**
+## AI UI Module Workflow
 
-| Command | Description |
-| --- | --- |
-| `:e <file>` | Open/edit file |
-| `:w` | Save file |
-| `:w <file>` | Save as another file |
-| `:q` | Quit |
-| `:q!` | Quit without saving |
-| `:wq` / `ZZ` | Save and quit |
-| `:x` | Like `:wq`, write if changes made |
-| `:bn` | Next buffer |
-| `:bp` | Previous buffer |
-| `:bd` | Delete buffer |
-| `:ls` / `:buffers` | List buffers |
-| `\x` | New scratch file |
+The AI UI module (`ai_ui.lua`) is a local Neovim interface for interacting with an AI assistant via REST endpoints.
 
-### 🔎 **Search**
+**Supported Commands**:
 
-| Command | Description |
-| --- | --- |
-| `/pattern` | Search forward |
-| `?pattern` | Search backward |
-| `n` | Repeat search in same direction |
-| `N` | Repeat search in opposite direction |
-| `*` | Search for word under cursor (forward) |
-| `#` | Search for word under cursor (backward) |
+- **Open UI** – Creates a floating question box and answer box.
+    
+- **Submit Question** – Sends text from the question box to the AI server and displays the response.
+    
+- **Clear Chat** – Clears both local buffers and server history.
+    
+- **Insert Current File** – Appends the contents of the last active buffer to the question box.
+    
+- **Toggle Question Box** – Hides or restores the question window to focus on answers.
+    
+- **Load History** – Loads past conversations from the AI server.
+    
+- **Show Models** – Displays available AI models.
+    
+- **Change Model** – Switches the AI model in use.
+    
 
-### 🧹 **Delete/Yank/Put**
+**Backend Requirements**:
 
-| Command | Description |
-| --- | --- |
-| `x` | Delete character under cursor |
-| `dd` | Delete current line |
-| `dw` | Delete word |
-| `d$` | Delete to end of line |
-| `yy` | Yank (copy) current line |
-| `yw` | Yank word |
-| `p` | Paste after cursor |
-| `P` | Paste before cursor |
+- API endpoints provided at:
+    
+    - `POST /ask` – Send a question.
+        
+    - `POST /clear_assistant` – Clear conversation history.
+        
+    - `GET /history` – Retrieve conversation history.
+        
+    - `GET /list_models` – Retrieve available models.
+        
+    - `POST /change_model` – Switch the active AI model.
+        
 
-### 📐 **Visual Mode**
+* * *
 
-| Command | Description |
-| --- | --- |
-| `v` | Start visual mode |
-| `V` | Start visual line mode |
-| `Ctrl-v` | Start visual block mode |
-| `y` | Yank selection |
-| `d` | Delete selection |
-| `>` | Indent selection |
-| `<` | Un-indent selection |
+## Installation Steps
 
-### ⌨️ **Command-Line Mode (`:`)**
+1.  Clone the repository:  
+    `git clone https://github.com/kjtakke/neovim ~/.config/nvim`
+    
+2.  Install dependencies:
+    
+    - `ripgrep` for live grep searches.
+        
+    - `pylint` and `shellcheck` for linting.
+        
+    - Node.js and npm for language servers.
+        
+    - Python `pipx` with `pynvim` for Python integration.
+        
+    - Optional: `tectonic` for LaTeX-based PDF exports via Pandoc.
+        
+3.  Launch Neovim:  
+    Run `nvim` to allow Lazy.nvim to install plugins.
+    
 
-| Command | Description |
-| --- | --- |
-| `:help <topic>` | Open help documentation |
-| `:set <option>` | Set an option (e.g., `:set number`) |
-| `:!<command>` | Run shell command |
-| `:syntax on` | Enable syntax highlighting |
-| `:noh` | Clear search highlights |
+* * *
 
-### 🧷 **Basic Tab Commands**
+## Customisation Guidelines
 
-| Command | Description |
-| --- | --- |
-| `:tabnew` | Open a new tab |
-| `:tabnew <file>` | Open a file in a new tab |
-| `:tabclose` | Close the current tab |
-| `:tabonly` | Close all other tabs |
-| `:tabs` | List all tabs and their contents |
-
-### 🔁 **Navigating Tabs**
-
-| Command | Description |
-| --- | --- |
-| `gt` or `:tabn` | Go to next tab |
-| `gT` or `:tabp` | Go to previous tab |
-| `:tabfirst` | Go to the first tab |
-| `:tablast` | Go to the last tab |
-| `:tabnext <N>` | Go to tab number N |
-
-### 🎯 **Moving Tabs**
-
-| Command | Description |
-| --- | --- |
-| `:tabmove <N>` | Move current tab to position N (0-indexed) |
-
-### 🪟 **Splitting Windows (in a Tab)**
-
-| Command | Description |
-| --- | --- |
-| `:split` / `:sp` | Horizontal split (same file) |
-| `:vsplit` / `:vsp` | Vertical split (same file) |
-| `:split <file>` | Horizontal split and open file |
-| `:vsplit <file>` | Vertical split and open file |
-| `/n` | vsplit new scratch file to the right |
-
-You can also use these in combination, e.g., `:vsp myfile.txt`.
-
-### ↔️ **Navigating Between Splits**
-
-| Command | Description |
-| --- | --- |
-| `Ctrl-w h` | Move to split left |
-| `Ctrl-w j` | Move to split below |
-| `Ctrl-w k` | Move to split above |
-| `Ctrl-w l` | Move to split right |
-| `Ctrl-w w` | Cycle to the next window |
-| `Ctrl-w q` | Quit a split |
-
-### 📏 **Resizing Splits**
-
-| Command | Description |
-| --- | --- |
-| `Ctrl-w >` | Increase width (vertical split) |
-| `Ctrl-w <` | Decrease width |
-| `Ctrl-w +` | Increase height (horizontal split) |
-| `Ctrl-w -` | Decrease height |
-| `Ctrl-w =` | Equalise all splits |
-
-### 🖥️ **Opening Terminals in Splits**
-
-| Command | Description |
-| --- | --- |
-| `:terminal` | Open terminal in current split |
-| `:split | terminal` | Open terminal in a new horizontal split |
-| `:vsplit | terminal` | Open terminal in a new vertical split |
-
-Once in a terminal:
-
-- Press `Ctrl-\ Ctrl-n` to exit terminal **insert mode** and return to normal mode.
-- Use `i` or `a` to go back into terminal input mode.
-
-### 🧼 **Closing Splits and Tabs**
-
-| Command | Description |
-| --- | --- |
-| `:q` | Close current window/split |
-| `:qa` | Quit all tabs and windows |
-| `:tabclose` | Close current tab |
-
-### ✍️ **Multi Line Editing**
-
-| Command | Description |
-| --- | --- |
-| `Ctrl-n` | Select word under cursor & add next matches |
-| `n` / `N` | Add next / previous match |
-| `Ctrl-Up` / `Ctrl-Down` | Add cursors above / below |
-| `Esc` | Exit multi-cursor mode |
-| `Ctrl-n` | Start multi-cursor with current word |
-| `Ctrl-p` | Skip current match and go to next |
-| `Ctrl-x` | Remove current cursor/match |
-| `Esc` | Exit multi-cursor mode |
-
-### 🖥️ **Tips**
-
-- **Tabs vs. Buffers**: Tabs are not buffers; each tab can contain multiple splits, each with its own buffer.
-- **Combining with Splits**: You can combine tabs and splits, e.g., `:tabnew | split` gives you a split in a new tab.
-- **Showing Tabs**: To keep tabs visible, set `set showtabline=2` in your configuration to always show the tabline.
-
-By following this guide, you should be well-equipped to install, configure, and use NeoVim effectively. Remember to refer back to these instructions and command references as needed to enhance your productivity and proficiency with NeoVim.
-```
+- All Neovim-specific behaviour should be placed in `lua/config/`.
+    
+- Plugin-specific settings must be in `lua/plugins/cfg/`.
+    
+- New custom tools or utilities should be placed under `lua/custom/` with their logic fully encapsulated.
+    
+- Keymaps should reference modules using `require("custom.module_name")` to maintain a clear namespace.
