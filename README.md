@@ -301,6 +301,7 @@ if [ -d ~/.config/nvim/.git ]; then
 else
   git clone https://github.com/kjtakke/neovim ~/.config/nvim
 fi
+```
 
 # 6) Launch
 nvim
