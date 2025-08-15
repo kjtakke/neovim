@@ -36,6 +36,7 @@ C | Change to end of line | Editing
 J | Join lines | Editing
 \z | Add Word to Dictionary | Editing
 \sc | Spell Sheck | Editing
+\rl | reload spell check | Editing
 
 # ======================
 # FOLDING (BUILT-IN)

@@ -1,7 +1,42 @@
 local sr = require("utils").safe_require
 
 return {
+-- GO FORMATTING (none-ls)
+{
+  "nvimtools/none-ls.nvim",
+  ft = { "go", "gomod", "gowork" },
+  dependencies = { "nvim-lua/plenary.nvim" },
+  config = function()
+    local null_ls = require("null-ls") -- module name stays "null-ls" in none-ls
+    local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 
+    null_ls.setup({
+      sources = {
+        null_ls.builtins.formatting.gofumpt,
+        null_ls.builtins.formatting.goimports_reviser, -- <-- built-in, no extras needed
+        null_ls.builtins.formatting.golines,
+      },
+      on_attach = function(client, bufnr)
+        if client.server_capabilities
+          and client.server_capabilities.documentFormattingProvider
+        then
+          vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            group = augroup,
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format({
+                bufnr = bufnr,
+                filter = function(c) return c.name == "null-ls" end,
+              })
+            end,
+          })
+        end
+      end,
+    })
+  end,
+}
+,
   -- TODO comments
   {
     "folke/todo-comments.nvim",
@@ -17,6 +52,14 @@ return {
       { "<leader>tt", "<cmd>TodoTrouble<cr>",   desc = "Todos (Trouble)" },
     },
   },
+  {
+  "jay-babu/mason-null-ls.nvim",
+  dependencies = { "williamboman/mason.nvim", "nvimtools/none-ls.nvim" },
+  opts = {
+    ensure_installed = { "gofumpt", "goimports-reviser", "golines" },
+    automatic_installation = true,
+  },
+},
 
   -- Markdown preview
   {
